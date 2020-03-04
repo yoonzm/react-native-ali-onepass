@@ -9,10 +9,23 @@
     "update-lib": "./scripts/update-lib.sh"
   },
   "keywords": [
-    "react-native"
+    "react-native",
+    "ali",
+    "onepass",
+    "quickpass",
+    "auth",
+    "onekey",
+    "login"
   ],
-  "author": "",
-  "license": "",
+  "files": [
+    "android/",
+    "ios/",
+    "index.js",
+    "package.json",
+    "README.md"
+  ],
+  "author": "yoonzm",
+  "license": "MIT",
   "peerDependencies": {
     "react-native": "*"
   }
