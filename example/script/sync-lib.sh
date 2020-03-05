@@ -2,8 +2,8 @@
 
 # 同步源代码
 
-srcPath=./
-modulePath=example/node_modules/react-native-ali-onepass/
+srcPath=../
+modulePath=node_modules/react-native-ali-onepass/
 
 sync(){
     # 子模块路径
@@ -36,7 +36,6 @@ sync ios/ "$(ls ${srcPath}ios)"
 # src
 #sourceDirs=()
 #sync src/ "$(ls ${srcPath}src)"
-
 
 # other
 sourceDirs=(index.js)

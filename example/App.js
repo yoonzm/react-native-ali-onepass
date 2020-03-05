@@ -11,6 +11,7 @@ import {
   Dimensions
 } from 'react-native';
 import * as OnePass from 'react-native-ali-onepass';
+import OnepassKey from './config/onepass-key';
 
 // 比例 652 为设计稿高度
 function getOffsetY(y) {
@@ -64,7 +65,7 @@ export default class App extends Component {
 
   init = async () => {
     try {
-      await OnePass.init(Platform.OS === 'ios' ? "cf5091d791b9488aa6a91449fb398643" : "hwjOx8YurHPeQmB3/TeXDV/x4EQXvM9QToQMR8Rp/FCAq36nA8hNK6edLDa9H9O9OlhYOYyN1hr8J1pBsusudqLPXvGTeCMQk59fPZSlwIrSa7sQu3/CG5AyicyPaA1vEqbVk8N7y37tFUY3SZ1uIj1ExIgIQztpazgYKTuroi/23kVVXO44nmmRftNG5//Ut3QetIPa+2xDMl7Gkjw5jrUXjAt07gY7xKqhIYCeIOWVPZk8LH6ydx8bwDXNhshZcoLwrFuWxb7ht9o0vEHcJmyN9XFVCR69jRK/OF5pI9c=");
+      await OnePass.init(Platform.OS === 'ios' ? OnepassKey.ios : OnepassKey.android);
       this.insert('init');
       await OnePass.prefetch();
     } catch (error) {

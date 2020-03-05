@@ -4,7 +4,10 @@
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
-    "test": "jest"
+    "android-release": " npm run sync-lib && sh script/android-release.sh",
+    "ios-release": "npm run sync-lib && sh script/ios-release.sh",
+    "ios-build": "react-native bundle --entry-file ./index.ios.js --bundle-output ./ios/bundle/index.ios.jsbundle --platform ios --assets-dest ./ios/bundle --dev false",
+    "sync-lib": "./script/sync-lib.sh"
   },
   "dependencies": {
     "react": "16.0.0-alpha.12",
