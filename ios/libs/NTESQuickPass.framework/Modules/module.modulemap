@@ -1,6 +1,0 @@
-framework module NTESQuickPass {
-  umbrella header "NTESQuickPass.h"
-
-  export *
-  module * { export * }
-}
