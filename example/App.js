@@ -63,9 +63,16 @@ export default class App extends Component {
     })
   }
 
+  get key() {
+    if (Platform.OS === 'ios') {
+      return __DEV__ ? OnepassKey.ios : OnepassKey.iosRelease
+    }
+    return __DEV__ ? OnepassKey.android : OnepassKey.androidRelease
+  }
+
   init = async () => {
     try {
-      await OnePass.init(Platform.OS === 'ios' ? OnepassKey.ios : OnepassKey.android);
+      await OnePass.init(this.key);
       this.insert('init');
       await OnePass.prefetch();
     } catch (error) {
