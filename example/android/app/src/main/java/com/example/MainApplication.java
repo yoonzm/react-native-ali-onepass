@@ -2,8 +2,8 @@ package com.example;
 
 import android.app.Application;
 
-import com.ali.onepass.RNAliOnepassPackage;
 import com.facebook.react.ReactApplication;
+import com.ali.onepass.RNAliOnepassPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
