@@ -110,8 +110,8 @@ export default class App extends Component {
       webNavTextColor: '#333333',
       webNavTextSize: 18,
       navReturnImgPath: 'back_icon',
-      navReturnImgWidth: 20,
-      navReturnImgHeight: 20,
+      // navReturnImgWidth: 20,
+      // navReturnImgHeight: 20,
       // logo
       logoImgPath: 'app_logo',
       logoHidden: false,
