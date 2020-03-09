@@ -8,7 +8,8 @@ import {
   Button,
   StyleSheet,
   Platform,
-  Dimensions
+  Dimensions,
+  Alert
 } from 'react-native';
 import * as OnePass from 'react-native-ali-onepass';
 import OnepassKey from './config/onepass-key';
@@ -30,22 +31,27 @@ export default class App extends Component {
   componentDidMount() {
     this.init();
     this.listerens = [
-      OnePass.addListener(OnePass.EVENTS.onTokenSuccess, (data) => {
-        this.insert(OnePass.EVENTS.onTokenSuccess, data);
+      OnePass.addListener(OnePass.EVENTS.onTokenSuccess, async (data) => {
         try {
-          const {code} = JSON.parse(data.token);
-          if (parseInt(code) === 600000) {
-            OnePass.hideLoginLoading();
-            OnePass.quitLoginPage();
-          } else if (parseInt(code) === 600001) {
-
+          console.log('onTokenSuccess', data);
+          const {code, msg, requestCode, token, vendorName} = data;
+          const numberCode = Number(code);
+          if (numberCode === OnePass.RESULT_CODES["600000"]) {
+            await OnePass.hideLoginLoading();
+            await OnePass.quitLoginPage();
           }
         } catch (error) {
           console.error('捕获错误', error);
         }
       }),
       OnePass.addListener(OnePass.EVENTS.onTokenFailed, (data) => {
-        this.insert(OnePass.EVENTS.onTokenFailed, data);
+        try {
+          console.log('onTokenFailed', data);
+          const {code, msg, requestCode, token, vendorName} = data;
+          Alert.alert('温馨提示', msg);
+        } catch (error) {
+          console.error('捕获错误', error);
+        }
       })
     ]
   }
@@ -73,14 +79,17 @@ export default class App extends Component {
   init = async () => {
     try {
       await OnePass.init(this.key);
-      this.insert('init');
+      await OnePass.checkEnvAvailable();
       await OnePass.prefetch();
+      this.insert('init', '初始化成功');
     } catch (error) {
       this.insert('error', error.message);
     }
   };
 
   onePass = async () => {
+    const operatorType = await OnePass.getOperatorType();
+    this.insert('operatorType', operatorType);
     const config = {
       //状态栏
       statusBarColor: '#FFFFFF',
@@ -106,6 +115,7 @@ export default class App extends Component {
       // 手机号掩码
       numFieldOffsetY: getOffsetY(300),
       // slogan
+      sloganText: `${operatorType}提供认证服务`,
       sloganTextColor: '#B2B2B2',
       sloganTextSize: 13,
       sloganOffsetY: getOffsetY(384),
@@ -133,11 +143,8 @@ export default class App extends Component {
     console.log('App.onePass()', config);
     await OnePass.setUIConfig(config);
     this.insert('UI初始化完成');
-    const operatorType = await OnePass.getOperatorType();
-    this.insert('operatorType', operatorType);
-    const {token, accessToken} = await OnePass.onePass();
-    this.insert('token', token);
-    this.insert('accessCode', accessToken);
+    const result = await OnePass.onePass();
+    this.insert('result', JSON.stringify(result));
   };
 
   render() {
