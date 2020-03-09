@@ -65,7 +65,7 @@ export default class App extends Component {
 
   get key() {
     if (Platform.OS === 'ios') {
-      return __DEV__ ? OnepassKey.ios : OnepassKey.iosRelease
+      return OnepassKey.ios
     }
     return __DEV__ ? OnepassKey.android : OnepassKey.androidRelease
   }

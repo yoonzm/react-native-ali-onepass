@@ -2,7 +2,8 @@
 import { NativeModules, Platform, NativeEventEmitter } from 'react-native';
 
 const { RNAliOnepass } = NativeModules;
-const eventEmitter = new NativeEventEmitter(RNAliOnepass);
+
+const eventEmitter = RNAliOnepass && new NativeEventEmitter(RNAliOnepass);
 
 export async function init(businessId) {
   return await RNAliOnepass.init(businessId);

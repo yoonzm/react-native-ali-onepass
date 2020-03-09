@@ -1,9 +1,9 @@
+
 # react-native-ali-onepass
-阿里云一键登录功能react-native库
 
 ## Getting started
 
-`$ npm install react-native-ali-onepass＠git@swifthealthgitlab.com:yin/react-native-ali-onepass.git --save`
+`$ npm install react-native-ali-onepass --save`
 
 ### Mostly automatic installation
 
@@ -16,7 +16,7 @@
 
 1. In XCode, in the project navigator, right click `Libraries` ➜ `Add Files to [your project's name]`
 2. Go to `node_modules` ➜ `react-native-ali-onepass` and add `RNAliOnepass.xcodeproj`
-3. In XCode, in the project navigator, select your project. Add `libRNAliOnepassa` to your project's `Build Phases` ➜ `Link Binary With Libraries`
+3. In XCode, in the project navigator, select your project. Add `libRNAliOnepass.a` to your project's `Build Phases` ➜ `Link Binary With Libraries`
 4. Run your project (`Cmd+R`)<
 
 #### Android
@@ -34,34 +34,20 @@
       compile project(':react-native-ali-onepass')
   	```
 
-## 手动添加
-### Android
-1. 在主工程的`app/build.gradle`中加入
-    ```
-    repositories {
-        flatDir {
-            dirs 'libs', '../../node_modules/react-native-ali-onepass/android/libs'
-        }
-    }
-    ```
-2. 若出现
-   ```
-    Attribute application@allowBackup value=(true) from AndroidManifest.xml
-   ```
-   在AndroidManifest.xml中添加
+#### Windows
+[Read it! :D](https://github.com/ReactWindows/react-native)
 
-   `manifest`节点
-   ```
-   xmlns:tools="http://schemas.android.com/tools"
-   ```
+1. In Visual Studio add the `RNAliOnepass.sln` in `node_modules/react-native-ali-onepass/windows/RNAliOnepass.sln` folder to their solution, reference from their app.
+2. Open up your `MainPage.cs` app
+  - Add `using Ali.Onepass.RNAliOnepass;` to the usings at the top of the file
+  - Add `new RNAliOnepassPackage()` to the `List<IReactPackage>` returned by the `Packages` method
 
-   `application`节点
-   ```
-   tools:replace="android:allowBackup"
-   ```
-
-### Ios
-1. 将./ios/libs中的四个库framework添加到主工程的TARGETS->Embedded Binaries中(请勾选Copy items if needed选项)
 
 ## Usage
-## [Example](./example)
+```javascript
+import RNAliOnepass from 'react-native-ali-onepass';
+
+// TODO: What to do with the module?
+RNAliOnepass;
+```
+

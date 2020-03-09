@@ -16,4 +16,4 @@ export default class Index extends Component {
   }
 }
 
-AppRegistry.registerComponent('alionepass', () => Index);
+AppRegistry.registerComponent('onepass', () => Index);
