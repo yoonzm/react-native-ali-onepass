@@ -14,7 +14,7 @@ today=`date +%Y-%m-%d`
 project_path=`pwd`
 
 #工程名 将XXX替换成自己的工程名
-project_name=example
+project_name=onepass
 
 #build文件夹路径
 build_path=${project_path}/build
