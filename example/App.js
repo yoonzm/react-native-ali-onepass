@@ -37,8 +37,14 @@ export default class App extends Component {
           const {code, msg, requestCode, token, vendorName} = data;
           const numberCode = Number(code);
           if (numberCode === OnePass.RESULT_CODES["600000"]) {
+            this.insert('token', token);
             await OnePass.hideLoginLoading();
             await OnePass.quitLoginPage();
+          } else if (numberCode === OnePass.RESULT_CODES["700001"]) {
+            this.insert('token', msg);
+            await OnePass.quitLoginPage();
+          } else {
+            this.insert('token', msg);
           }
         } catch (error) {
           console.error('捕获错误', error);
@@ -130,6 +136,7 @@ export default class App extends Component {
       switchOffsetY: getOffsetY(492),
       // 协议栏
       privacyBefore: '登录即同意',
+      privacyEnd: '并授权获取本机号码',
       checkboxHidden: true,
       privacyState: true,
       appPrivacyOneName: '《智慧好医生APP协议》',
