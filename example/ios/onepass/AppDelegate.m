@@ -22,8 +22,8 @@
     // 卫江的IP
     //  NSString *serverIP =  @"192.168.1.8";
     // 智敏的IP
-//    NSString *serverIP =  @"192.168.1.16";
-      NSString *serverIP =  @"127.0.0.1";
+    NSString *serverIP =  @"192.168.1.16";
+//      NSString *serverIP =  @"127.0.0.1";
     //  NSString *serverIP =  @"192.168.4.127";
     NSString *jsCodeUrlString = [NSString stringWithFormat:@"http://%@:8081/index.ios.bundle?platform=ios&dev=true", serverIP];
     jsCodeLocation = [NSURL URLWithString:jsCodeUrlString];
