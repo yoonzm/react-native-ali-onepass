@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.ImageView;
 
+import com.alibaba.fastjson.JSON;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -18,6 +19,7 @@ import com.mobile.auth.gatewayauth.AuthUIConfig;
 import com.mobile.auth.gatewayauth.PhoneNumberAuthHelper;
 import com.mobile.auth.gatewayauth.PreLoginResultListener;
 import com.mobile.auth.gatewayauth.TokenResultListener;
+import com.mobile.auth.gatewayauth.model.TokenRet;
 
 public class RNAliOnepassModule extends ReactContextBaseJavaModule implements TokenResultListener {
 
@@ -72,14 +74,33 @@ public class RNAliOnepassModule extends ReactContextBaseJavaModule implements To
     @Override
     public void onTokenSuccess(String s) {
         WritableMap writableMap = Arguments.createMap();
-        writableMap.putString("token", s);
+        TokenRet tokenRet = null;
+        try {
+            tokenRet = JSON.parseObject(s, TokenRet.class);
+            writableMap.putString("vendorName", tokenRet.getVendorName());
+            writableMap.putString("code", tokenRet.getCode());
+            writableMap.putString("msg", tokenRet.getMsg());
+            writableMap.putInt("requestCode", tokenRet.getRequestCode());
+            writableMap.putString("token", tokenRet.getToken());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         sendEvent("onTokenSuccess", writableMap);
     }
 
     @Override
     public void onTokenFailed(String s) {
         WritableMap writableMap = Arguments.createMap();
-        writableMap.putString("error", s);
+        TokenRet tokenRet = null;
+        try {
+            tokenRet = JSON.parseObject(s, TokenRet.class);
+            writableMap.putString("vendorName", tokenRet.getVendorName());
+            writableMap.putString("code", tokenRet.getCode());
+            writableMap.putString("msg", tokenRet.getMsg());
+            writableMap.putInt("requestCode", tokenRet.getRequestCode());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         sendEvent("onTokenFailed", writableMap);
     }
 
@@ -155,34 +176,15 @@ public class RNAliOnepassModule extends ReactContextBaseJavaModule implements To
             return;
         }
         String carrierName = phoneNumberAuthHelper.getCurrentCarrierName();
+        if (carrierName.equals("CMCC")) {
+            carrierName = "中国移动";
+        } else if (carrierName.equals("CUCC")) {
+            carrierName = "中国联通";
+        } else if (carrierName.equals("CTCC")) {
+            carrierName = "中国电信";
+        }
         promise.resolve(carrierName);
     }
-
-    /**
-     * 设置预取号超时时间，单位s
-     *
-     * @param timeout
-     * @param promise
-     */
-    @ReactMethod
-    public void setPrefetchNumberTimeout(final int timeout, final Promise promise) {
-        prefetchNumberTimeout = timeout * 1000;
-        promise.resolve("");
-    }
-
-
-    /**
-     * 设置取号超时时间，单位s
-     *
-     * @param timeout
-     * @param promise
-     */
-    @ReactMethod
-    public void setFetchNumberTimeout(final int timeout, final Promise promise) {
-        fetchNumberTimeout = timeout * 1000;
-        promise.resolve("");
-    }
-
 
     /**
      * 设置界面UI
