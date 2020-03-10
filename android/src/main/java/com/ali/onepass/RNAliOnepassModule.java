@@ -205,7 +205,7 @@ public class RNAliOnepassModule extends ReactContextBaseJavaModule implements To
         setLogoUI(builder, config);
         setNumberUI(builder, config);
         setPrivacyUI(builder, config);
-        setDialogUI(builder, config);
+        setOtherUI(builder, config);
         phoneNumberAuthHelper.setAuthUIConfig(builder.create());
         promise.resolve("");
     }
@@ -349,13 +349,6 @@ public class RNAliOnepassModule extends ReactContextBaseJavaModule implements To
     }
 
     /**
-     * 自定义控件
-     */
-    private void setCustomViewUI(AuthUIConfig.Builder builder, ReadableMap config) {
-
-    }
-
-    /**
      * 状态栏
      */
     private void setStatusBarUI(AuthUIConfig.Builder builder, ReadableMap config) {
@@ -452,9 +445,9 @@ public class RNAliOnepassModule extends ReactContextBaseJavaModule implements To
     }
 
     /**
-     * 弹窗
+     * 其他
      */
-    private void setDialogUI(AuthUIConfig.Builder builder, ReadableMap config) {
+    private void setOtherUI(AuthUIConfig.Builder builder, ReadableMap config) {
 
     }
 
