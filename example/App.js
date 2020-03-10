@@ -123,13 +123,21 @@ export default class App extends Component {
       logoHeight: 80,
       logoOffsetY: getOffsetY(175),
       // 手机号掩码
-      numFieldOffsetY: getOffsetY(300),
+      numberColor: '#333333',
+      numberSize: 25,
+      numberFieldOffsetY: getOffsetY(300),
       // slogan
       sloganText: `${operatorType}提供认证服务`,
       sloganTextColor: '#B2B2B2',
       sloganTextSize: 13,
       sloganOffsetY: getOffsetY(384),
       // 登录按钮
+      logBtnText: '本机号码一键登录',
+      logBtnTextColor: '#FFFFFF',
+      logBtnTextSize: 18,
+      // ios
+      logBtnBackgroundPaths: ['onepass_login_btn_normal', 'onepass_login_btn_press', 'onepass_login_btn_unable'],
+      // android
       logBtnBackgroundPath: 'login_btn_bg',
       logBtnMarginLeftAndRight: 35,
       logBtnOffsetY: getOffsetY(417),
