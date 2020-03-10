@@ -86,12 +86,14 @@ export default class App extends Component {
   init = async () => {
     try {
       await OnePass.init(this.key);
-      await OnePass.checkEnvAvailable();
-      await OnePass.prefetch();
       this.insert('init', '初始化成功');
       this.setState({
         initSuccess: true
-      })
+      });
+      const available = await OnePass.checkEnvAvailable();
+      this.insert('checkEnvAvailable', available + "");
+      await OnePass.prefetch();
+      this.insert('prefetch', "");
     } catch (error) {
       this.insert('error', error.message);
     }
