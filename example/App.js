@@ -9,7 +9,7 @@ import {
   StyleSheet,
   Platform,
   Dimensions,
-  Alert
+  Alert, ScrollView
 } from 'react-native';
 import * as OnePass from 'react-native-ali-onepass';
 import OnepassKey from './config/onepass-key';
@@ -23,7 +23,8 @@ export default class App extends Component {
   constructor() {
     super();
     this.state = {
-      content: ''
+      content: '',
+      initSuccess: false
     };
     this.listerens = [];
   }
@@ -88,6 +89,9 @@ export default class App extends Component {
       await OnePass.checkEnvAvailable();
       await OnePass.prefetch();
       this.insert('init', '初始化成功');
+      this.setState({
+        initSuccess: true
+      })
     } catch (error) {
       this.insert('error', error.message);
     }
@@ -110,8 +114,8 @@ export default class App extends Component {
       webNavTextColor: '#333333',
       webNavTextSize: 18,
       navReturnImgPath: 'back_icon',
-      // navReturnImgWidth: 20,
-      // navReturnImgHeight: 20,
+      // navReturnImgWidth: 48,
+      // navReturnImgHeight: 48,
       // logo
       logoImgPath: 'app_logo',
       logoHidden: false,
@@ -149,16 +153,23 @@ export default class App extends Component {
     };
     console.log('App.onePass()', config);
     await OnePass.setUIConfig(config);
-    this.insert('UI初始化完成');
-    const result = await OnePass.onePass();
-    this.insert('result', JSON.stringify(result));
+    this.insert('UI初始化完成', "");
+    await OnePass.onePass();
   };
 
   render() {
     return (
       <View style={styles.container}>
-        <Button title="一键登录" onPress={this.onePass}/>
-        <Text>{this.state.content}</Text>
+        <Button disabled={!this.state.initSuccess} title="一键登录" onPress={this.onePass}/>
+        <View style={{height: 20}}/>
+        <ScrollView>
+          {this.state.content.split('\n').map((item, index) => (
+            <Text key={index} style={{
+              lineHeight: 25,
+              color: '#333'
+            }} selectable>{item}</Text>
+          ))}
+        </ScrollView>
       </View>
     );
   }
@@ -170,5 +181,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
+    paddingVertical: 20,
+    paddingHorizontal: 15
   }
 });
