@@ -407,11 +407,11 @@ public class RNAliOnepassModule extends ReactContextBaseJavaModule implements To
         if (config.hasKey(methodName2KeyName("setNumberFieldOffsetX"))) {
             builder.setNumberFieldOffsetX(config.getInt(methodName2KeyName("setNumberFieldOffsetX")));
         }
-        if (config.hasKey(methodName2KeyName("setNumFieldOffsetY"))) {
-            builder.setNumFieldOffsetY(config.getInt(methodName2KeyName("setNumFieldOffsetY")));
+        if (config.hasKey(methodName2KeyName("setNumberFieldOffsetY"))) {
+            builder.setNumFieldOffsetY(config.getInt(methodName2KeyName("setNumberFieldOffsetY")));
         }
-        if (config.hasKey(methodName2KeyName("setNumFieldOffsetY_B"))) {
-            builder.setNumFieldOffsetY_B(config.getInt(methodName2KeyName("setNumFieldOffsetY_B")));
+        if (config.hasKey(methodName2KeyName("setNumberFieldOffsetY_B"))) {
+            builder.setNumFieldOffsetY_B(config.getInt(methodName2KeyName("setNumberFieldOffsetY_B")));
         }
     }
 
