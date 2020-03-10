@@ -48,12 +48,6 @@ repositories {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.facebook.react:react-native:+'
-//    compile(name: 'quicklogin-external-release', ext: 'aar') /* aar包具体*/
-//    compile(name: 'CMCCSSOSDK-release-5.6.6.1', ext: 'aar')
-//    compile(name: 'Ui-factory_oauth_mobile_3.8.3.1', ext: 'aar')
-//    compile(name: 'CTAccount_sdk_api_v3.7.0_all', ext: 'aar')
-//    compile 'com.google.code.gson:gson:2.6.2' // 配置对gson的依赖
-
     compile(name: 'AlicomPhoneNumberAuthSDK_L_Release_20191219_202532', ext: 'aar')
     compile 'com.alibaba:fastjson:1.2.60' // 配置对gson的依赖
 }
