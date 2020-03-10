@@ -44,4 +44,4 @@ buck-out/
 *.keystore
 
 # example
-#example/config/onepass-key.json
+#example/config/
