@@ -200,13 +200,17 @@ RCT_EXPORT_METHOD(setUIConfig:(NSDictionary *)config resolve:(RCTPromiseResolveB
         tXCustomModel.numberFont = [UIFont systemFontOfSize:[numberSize floatValue]];
     }
     NSString *numberFieldOffsetX = [config objectForKey:[self methodName2KeyName:@"setNumberFieldOffsetX"]];
+    NSString *numberFieldOffsetY = [config objectForKey:[self methodName2KeyName:@"setNumberFieldOffsetY"]];
     tXCustomModel.numberFrameBlock = ^CGRect(CGSize screenSize, CGSize superViewSize, CGRect frame) {
         CGFloat x = frame.origin.x;
         CGFloat y = frame.origin.y;
         CGFloat width = frame.size.width;
         CGFloat height = frame.size.height;
         if (numberFieldOffsetX != nil) {
-            y = [numberFieldOffsetX floatValue];
+            x = [numberFieldOffsetY floatValue];
+        }
+        if (numberFieldOffsetY != nil) {
+            y = [numberFieldOffsetY floatValue];
         }
         return CGRectMake(x, y, width, height);
     };
@@ -234,6 +238,10 @@ RCT_EXPORT_METHOD(setUIConfig:(NSDictionary *)config resolve:(RCTPromiseResolveB
     NSString *logBtnTextSize = [config objectForKey:[self methodName2KeyName:@"setLogBtnTextSize"]];
     if (logBtnText != nil && logBtnTextColor != nil && logBtnTextSize != nil) {
         tXCustomModel.loginBtnText = [[NSAttributedString alloc]initWithString:logBtnText attributes:@{NSForegroundColorAttributeName: [self colorWithHexString:logBtnTextColor], NSFontAttributeName:[UIFont systemFontOfSize:[logBtnTextSize doubleValue]]}];
+    }
+    NSArray<NSString *> *logBtnBackgroundPaths = [config objectForKey:[self methodName2KeyName:@"setLogBtnBackgroundPaths"]];
+    if (logBtnBackgroundPaths != nil) {
+        tXCustomModel.loginBtnBgImgs = @[[UIImage imageNamed:logBtnBackgroundPaths[0]], [UIImage imageNamed:logBtnBackgroundPaths[1]], [UIImage imageNamed:logBtnBackgroundPaths[2]]];
     }
     tXCustomModel.autoHideLoginLoading = NO; // 与安卓保持一致
     NSString *logBtnMarginLeftAndRight = [config objectForKey:[self methodName2KeyName:@"setLogBtnMarginLeftAndRight"]];
