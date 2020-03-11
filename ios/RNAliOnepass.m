@@ -76,8 +76,6 @@ RCT_EXPORT_METHOD(onePass:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseReje
         NSString *token = [resultDic objectForKey:@"token"];
         if(resultCode==PNSCodeSuccess
            || resultCode==PNSCodeLoginControllerPresentSuccess
-           || resultCode==PNSCodeLoginControllerClickCancel
-           || resultCode==PNSCodeLoginControllerClickChangeBtn
            || resultCode==PNSCodeLoginControllerClickLoginBtn
            || resultCode==PNSCodeLoginControllerClickCheckBoxBtn
               || resultCode==PNSCodeLoginControllerClickProtocol
@@ -370,4 +368,4 @@ RCT_EXPORT_METHOD(setUIConfig:(NSDictionary *)config resolve:(RCTPromiseResolveB
 
 
 @end
-  
+
