@@ -1,6 +1,29 @@
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.ali.onepass">
-
+    <application>
+        <!-- 联通电信授权⻚ -->
+        <activity
+                android:name="com.mobile.auth.gatewayauth.LoginAuthActivity"
+                android:configChanges="orientation|keyboardHidden|screenSize"
+                android:exported="false"
+                android:launchMode="singleTop"
+                android:screenOrientation="behind"
+                android:theme="@style/authsdk_activity_dialog" />
+        <!-- 协议⻚面 webview-->
+        <activity
+                android:name="com.mobile.auth.gatewayauth.activity.AuthWebVeiwActivity"
+                android:configChanges="orientation|keyboardHidden|screenSize"
+                android:exported="false"
+                android:launchMode="singleTop"
+                android:screenOrientation="behind" />
+        <!-- 移动授权⻚ -->
+        <activity
+                android:name="com.cmic.sso.sdk.activity.LoginAuthActivity"
+                android:configChanges="orientation|keyboardHidden|screenSize"
+                android:launchMode="singleTop"
+                android:screenOrientation="behind"
+                android:theme="@style/authsdk_activity_dialog" />
+    </application>
 </manifest>
 
