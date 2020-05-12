@@ -6,6 +6,10 @@
   "scripts": {
     "test": "echo \"no test specified \""
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hxzAugustinus/react-native-ali-onepass.git"
+  },
   "keywords": [
     "react-native",
     "ali",
