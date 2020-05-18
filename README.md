@@ -35,6 +35,14 @@
   	```
       compile project(':react-native-ali-onepass')
   	```
+4. Insert the following lines inside the android block in `android/app/build.gradle`:
+  	```
+      repositories {
+          flatDir {
+              dirs 'libs', '../../node_modules/react-native-ali-onepass/android/libs'
+          }
+      }
+  	```
 
 ## [Example](https://github.com/yoonzm/react-native-ali-onepass/blob/master/example/App.js)
 
