@@ -290,7 +290,7 @@ RCT_EXPORT_METHOD(setUIConfig:(NSDictionary *)config resolve:(RCTPromiseResolveB
     NSString *appPrivacyTwoName = [config objectForKey:[self methodName2KeyName:@"setAppPrivacyTwoName"]];
     NSString *appPrivacyTwoUrl = [config objectForKey:[self methodName2KeyName:@"setAppPrivacyTwoUrl"]];
     if (appPrivacyTwoName != nil && appPrivacyTwoUrl != nil) {
-        tXCustomModel.privacyOne = @[appPrivacyTwoName, appPrivacyTwoUrl];
+        tXCustomModel.privacyTwo = @[appPrivacyTwoName, appPrivacyTwoUrl];
     }
     NSString *privacyState = [config objectForKey:[self methodName2KeyName:@"setPrivacyState"]];
     if (privacyState != nil) {
