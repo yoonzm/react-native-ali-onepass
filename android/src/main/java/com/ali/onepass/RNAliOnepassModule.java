@@ -2,7 +2,6 @@
 package com.ali.onepass;
 
 import android.graphics.Color;
-import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.ImageView;
 
@@ -451,7 +450,7 @@ public class RNAliOnepassModule extends ReactContextBaseJavaModule implements To
 
     }
 
-    private void sendEvent(String eventName, @Nullable WritableMap params) {
+    private void sendEvent(String eventName, WritableMap params) {
         try {
             this.reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
                     .emit(eventName, params);
