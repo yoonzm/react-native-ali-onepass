@@ -48,6 +48,6 @@ repositories {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.facebook.react:react-native:+'
-    compile(name: 'AlicomPhoneNumberAuthSDK_L_Release_20191219_202532', ext: 'aar')
+    compile(name: 'phoneNumber-L-AuthSDK-2.11.1', ext: 'aar')
     compile 'com.alibaba:fastjson:1.2.60' // 配置对gson的依赖
 }
