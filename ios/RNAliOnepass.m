@@ -1,6 +1,21 @@
 
 #import "RNAliOnepass.h"
 
+#define TX_SCREEN_HEIGHT [[UIScreen mainScreen] bounds].size.height
+#define TX_SCREEN_WIDTH [[UIScreen mainScreen] bounds].size.width
+#define IS_HORIZONTAL (TX_SCREEN_WIDTH > TX_SCREEN_WIDTH)
+
+#define TX_Alert_NAV_BAR_HEIGHT      55.0
+#define TX_Alert_HORIZONTAL_NAV_BAR_HEIGHT      41.0
+
+//竖屏弹窗
+#define TX_Alert_Default_Left_Padding         42
+#define TX_Alert_Default_Top_Padding          115
+
+/**横屏弹窗*/
+#define TX_Alert_Horizontal_Default_Left_Padding      80.0
+
+
 @implementation RNAliOnepass {
     TXCommonHandler *tXCommonHandler;
     NSInteger *prefetchNumberTimeout;
@@ -328,6 +343,229 @@ RCT_EXPORT_METHOD(setUIConfig:(NSDictionary *)config resolve:(RCTPromiseResolveB
     resolve(@"");
 }
 
+
+// 设置UI
+RCT_EXPORT_METHOD(setDialogUIConfig:(NSDictionary *)config resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject){
+    NSLog(@"config = %@", config);
+    tXCustomModel = [[TXCustomModel alloc] init];
+    tXCustomModel.alertCornerRadiusArray = @[@10, @10, @10, @10];
+    // 状态栏
+    NSString *statusBarHidden = [config objectForKey:[self methodName2KeyName:@"setStatusBarHidden"]];
+    if (statusBarHidden != nil) {
+        tXCustomModel.prefersStatusBarHidden = [statusBarHidden boolValue];
+    }
+    // 标题栏
+    NSString *navColor = [config objectForKey:[self methodName2KeyName:@"setNavColor"]];
+    if (navColor != nil) {
+        tXCustomModel.navColor = [self colorWithHexString:navColor];
+    }
+    NSString *navText = [config objectForKey:[self methodName2KeyName:@"setNavText"]];
+    NSString *navTextColor = [config objectForKey:[self methodName2KeyName:@"setNavTextColor"]];
+    NSString *navTextSize = [config objectForKey:[self methodName2KeyName:@"setNavTextSize"]];
+    if (navText != nil && navTextColor != nil && navTextSize != nil) {
+        tXCustomModel.navTitle = [[NSAttributedString alloc]initWithString:navText attributes:@{NSForegroundColorAttributeName: [self colorWithHexString:navTextColor], NSFontAttributeName:[UIFont systemFontOfSize:[navTextSize doubleValue]]}];
+    }
+    NSString *navReturnImgPath = [config objectForKey:[self methodName2KeyName:@"setNavReturnImgPath"]];
+    if (navReturnImgPath != nil) {
+        tXCustomModel.navBackImage = [UIImage imageNamed:navReturnImgPath];
+        tXCustomModel.privacyNavBackImage = [UIImage imageNamed:navReturnImgPath];
+    }
+    NSString *navReturnImgWidth = [config objectForKey:[self methodName2KeyName:@"setNavReturnImgWidth"]];
+    NSString *navReturnImgHeight = [config objectForKey:[self methodName2KeyName:@"setNavReturnImgHeight"]];
+    tXCustomModel.navBackButtonFrameBlock = ^CGRect(CGSize screenSize, CGSize superViewSize, CGRect frame) {
+        CGFloat x = frame.origin.x;
+        CGFloat y = frame.origin.y;
+        CGFloat width = frame.size.width;
+        CGFloat height = frame.size.height;
+        if (navReturnImgWidth != nil) {
+            width = [navReturnImgWidth floatValue];
+        }
+        if (navReturnImgHeight != nil) {
+            height = [navReturnImgHeight floatValue];
+        }
+        return CGRectMake(x, y, width, height);
+    };
+
+    CGFloat ratio = MAX(TX_SCREEN_WIDTH, TX_SCREEN_HEIGHT) / 667.0;
+    tXCustomModel.contentViewFrameBlock = ^CGRect(CGSize screenSize, CGSize contentSize, CGRect frame) {
+        CGFloat alertX = 0;
+        CGFloat alertY = 0;
+        CGFloat alertWidth = 0;
+        CGFloat alertHeight = 0;
+
+        if ([self isHorizontal:screenSize]) {
+            alertX = ratio * TX_Alert_Horizontal_Default_Left_Padding;
+            alertWidth = screenSize.width - alertX * 2;
+            alertY = (screenSize.height - alertWidth * 0.5) * 0.5;
+            alertHeight = screenSize.height - 2 * alertY;
+        } else {
+            alertX = TX_Alert_Default_Left_Padding * ratio;
+            alertWidth = screenSize.width - alertX * 2;
+            alertY = TX_Alert_Default_Top_Padding * ratio;
+            alertHeight = screenSize.height - alertY * 2;
+        }
+        return CGRectMake(alertX, alertY, alertWidth, alertHeight);
+    };
+    // logo
+    NSString *logoImgPath = [config objectForKey:[self methodName2KeyName:@"setLogoImgPath"]];
+    if (logoImgPath != nil) {
+        tXCustomModel.logoImage = [UIImage imageNamed:logoImgPath];
+    }
+    NSString *logoHidden = [config objectForKey:[self methodName2KeyName:@"setLogoHidden"]];
+    if (logoHidden != nil) {
+        tXCustomModel.logoIsHidden = [logoHidden boolValue];
+    }
+    NSString *logoOffsetY = [config objectForKey:[self methodName2KeyName:@"setLogoOffsetY"]];
+    tXCustomModel.logoFrameBlock = ^CGRect(CGSize screenSize, CGSize superViewSize, CGRect frame) {
+        CGFloat x = frame.origin.x;
+        CGFloat y = frame.origin.y;
+        CGFloat width = frame.size.width;
+        CGFloat height = frame.size.height;
+        if (logoOffsetY != nil) {
+            y = [logoOffsetY floatValue];
+        }
+        return CGRectMake(x, y, width, height);
+    };
+    // number
+    NSString *numberColor = [config objectForKey:[self methodName2KeyName:@"setNumberColor"]];
+    if (numberColor != nil) {
+        tXCustomModel.numberColor = [self colorWithHexString:numberColor];
+    }
+    NSString *numberSize = [config objectForKey:[self methodName2KeyName:@"setNumberSize"]];
+    if (numberSize != nil) {
+        tXCustomModel.numberFont = [UIFont systemFontOfSize:[numberSize floatValue]];
+    }
+    NSString *numberFieldOffsetX = [config objectForKey:[self methodName2KeyName:@"setNumberFieldOffsetX"]];
+    NSString *numberFieldOffsetY = [config objectForKey:[self methodName2KeyName:@"setNumberFieldOffsetY"]];
+    tXCustomModel.numberFrameBlock = ^CGRect(CGSize screenSize, CGSize superViewSize, CGRect frame) {
+        CGFloat x = frame.origin.x;
+        CGFloat y = frame.origin.y;
+        CGFloat width = frame.size.width;
+        CGFloat height = frame.size.height;
+        if (numberFieldOffsetX != nil) {
+            x = [numberFieldOffsetY floatValue];
+        }
+        if (numberFieldOffsetY != nil) {
+            y = [numberFieldOffsetY floatValue];
+        }
+        return CGRectMake(x, y, width, height);
+    };
+    // slogan
+    NSString *sloganText = [config objectForKey:[self methodName2KeyName:@"setSloganText"]];
+    NSString *sloganTextColor = [config objectForKey:[self methodName2KeyName:@"setSloganTextColor"]];
+    NSString *sloganTextSize = [config objectForKey:[self methodName2KeyName:@"setSloganTextSize"]];
+    if (sloganText != nil && sloganTextColor != nil && sloganTextSize != nil) {
+        tXCustomModel.sloganText = [[NSAttributedString alloc]initWithString:sloganText attributes:@{NSForegroundColorAttributeName: [self colorWithHexString:sloganTextColor], NSFontAttributeName:[UIFont systemFontOfSize:[sloganTextSize doubleValue]]}];
+    }
+    NSString *sloganOffsetY = [config objectForKey:[self methodName2KeyName:@"setSloganOffsetY"]];
+    tXCustomModel.sloganFrameBlock = ^CGRect(CGSize screenSize, CGSize superViewSize, CGRect frame) {
+        CGFloat x = frame.origin.x;
+        CGFloat y = frame.origin.y;
+        CGFloat width = frame.size.width;
+        CGFloat height = frame.size.height;
+        if (sloganOffsetY != nil) {
+            y = [sloganOffsetY floatValue];
+        }
+        return CGRectMake(x, y, width, height);
+    };
+    // logBtn
+    NSString *logBtnText = [config objectForKey:[self methodName2KeyName:@"setLogBtnText"]];
+    NSString *logBtnTextColor = [config objectForKey:[self methodName2KeyName:@"setLogBtnTextColor"]];
+    NSString *logBtnTextSize = [config objectForKey:[self methodName2KeyName:@"setLogBtnTextSize"]];
+    if (logBtnText != nil && logBtnTextColor != nil && logBtnTextSize != nil) {
+        tXCustomModel.loginBtnText = [[NSAttributedString alloc]initWithString:logBtnText attributes:@{NSForegroundColorAttributeName: [self colorWithHexString:logBtnTextColor], NSFontAttributeName:[UIFont systemFontOfSize:[logBtnTextSize doubleValue]]}];
+    }
+    NSArray<NSString *> *logBtnBackgroundPaths = [config objectForKey:[self methodName2KeyName:@"setLogBtnBackgroundPaths"]];
+    if (logBtnBackgroundPaths != nil) {
+        tXCustomModel.loginBtnBgImgs = @[[UIImage imageNamed:logBtnBackgroundPaths[0]], [UIImage imageNamed:logBtnBackgroundPaths[1]], [UIImage imageNamed:logBtnBackgroundPaths[2]]];
+    }
+    tXCustomModel.autoHideLoginLoading = NO; // 与安卓保持一致
+    NSString *logBtnMarginLeftAndRight = [config objectForKey:[self methodName2KeyName:@"setLogBtnMarginLeftAndRight"]];
+    NSString *logBtnOffsetY = [config objectForKey:[self methodName2KeyName:@"setLogBtnOffsetY"]];
+    tXCustomModel.loginBtnFrameBlock = ^CGRect(CGSize screenSize, CGSize superViewSize, CGRect frame) {
+        CGFloat x = frame.origin.x;
+        CGFloat y = frame.origin.y;
+        CGFloat width = frame.size.width;
+        CGFloat height = frame.size.height;
+        if (logBtnOffsetY != nil) {
+            y = [logBtnOffsetY floatValue];
+        }
+        if (logBtnMarginLeftAndRight != nil) {
+            width = screenSize.width - [logBtnMarginLeftAndRight floatValue] * 2;
+            x = [logBtnMarginLeftAndRight floatValue];
+        }
+        return CGRectMake(x, y, width, height);
+    };
+    // switch
+    NSString *switchAccText = [config objectForKey:[self methodName2KeyName:@"setSwitchAccText"]];
+    NSString *switchAccTextColor = [config objectForKey:[self methodName2KeyName:@"setSwitchAccTextColor"]];
+    NSString *switchAccTextSize = [config objectForKey:[self methodName2KeyName:@"setSwitchAccTextSize"]];
+    if (switchAccText != nil && switchAccTextColor != nil && switchAccTextSize != nil) {
+        tXCustomModel.changeBtnTitle = [[NSAttributedString alloc]initWithString:switchAccText attributes:@{NSForegroundColorAttributeName: [self colorWithHexString:switchAccTextColor], NSFontAttributeName:[UIFont systemFontOfSize:[switchAccTextSize doubleValue]]}];
+    }
+    NSString *switchAccHidden = [config objectForKey:[self methodName2KeyName:@"setSwitchAccHidden"]];
+    if (switchAccHidden != nil) {
+        tXCustomModel.changeBtnIsHidden = [switchAccHidden boolValue];
+    }
+    NSString *switchOffsetY = [config objectForKey:[self methodName2KeyName:@"setSwitchOffsetY"]];
+    tXCustomModel.changeBtnFrameBlock = ^CGRect(CGSize screenSize, CGSize superViewSize, CGRect frame) {
+        CGFloat x = frame.origin.x;
+        CGFloat y = frame.origin.y;
+        CGFloat width = frame.size.width;
+        CGFloat height = frame.size.height;
+        if (switchOffsetY != nil) {
+            y = [switchOffsetY floatValue];
+        }
+        return CGRectMake(x, y, width, height);
+    };
+    // orivacy
+    tXCustomModel.privacyAlignment = NSTextAlignmentCenter; // 与安卓保持一致
+    NSString *appPrivacyOneName = [config objectForKey:[self methodName2KeyName:@"setAppPrivacyOneName"]];
+    NSString *appPrivacyOneUrl = [config objectForKey:[self methodName2KeyName:@"setAppPrivacyOneUrl"]];
+    if (appPrivacyOneName != nil && appPrivacyOneUrl != nil) {
+        tXCustomModel.privacyOne = @[appPrivacyOneName, appPrivacyOneUrl];
+    }
+    NSString *appPrivacyTwoName = [config objectForKey:[self methodName2KeyName:@"setAppPrivacyTwoName"]];
+    NSString *appPrivacyTwoUrl = [config objectForKey:[self methodName2KeyName:@"setAppPrivacyTwoUrl"]];
+    if (appPrivacyTwoName != nil && appPrivacyTwoUrl != nil) {
+        tXCustomModel.privacyTwo = @[appPrivacyTwoName, appPrivacyTwoUrl];
+    }
+    NSString *privacyState = [config objectForKey:[self methodName2KeyName:@"setPrivacyState"]];
+    if (privacyState != nil) {
+        tXCustomModel.checkBoxIsChecked = [privacyState boolValue];
+    }
+    NSString *privacyTextSize = [config objectForKey:[self methodName2KeyName:@"setPrivacyTextSize"]];
+    if (privacyTextSize != nil) {
+        tXCustomModel.privacyFont = [UIFont systemFontOfSize:[privacyTextSize floatValue]];
+    }
+    NSString *appPrivacyBaseColor = [config objectForKey:[self methodName2KeyName:@"setAppPrivacyBaseColor"]];
+    NSString *appPrivacyColor = [config objectForKey:[self methodName2KeyName:@"setAppPrivacyColor"]];
+    if (appPrivacyBaseColor != nil && appPrivacyColor != nil) {
+        tXCustomModel.privacyColors = @[[self colorWithHexString:appPrivacyBaseColor], [self colorWithHexString:appPrivacyColor]];
+    }
+    NSString *vendorPrivacyPrefix = [config objectForKey:[self methodName2KeyName:@"setVendorPrivacyPrefix"]];
+    NSString *vendorPrivacySuffix = [config objectForKey:[self methodName2KeyName:@"setVendorPrivacySuffix"]];
+    if (vendorPrivacyPrefix != nil) {
+        tXCustomModel.privacyOperatorPreText = vendorPrivacyPrefix;
+    }
+    if (vendorPrivacySuffix != nil) {
+        tXCustomModel.privacyOperatorSufText = vendorPrivacySuffix;
+    }
+    NSString *privacyBefore = [config objectForKey:[self methodName2KeyName:@"setPrivacyBefore"]];
+    NSString *privacyEnd = [config objectForKey:[self methodName2KeyName:@"setPrivacyEnd"]];
+    if (privacyBefore != nil) {
+        tXCustomModel.privacyPreText = privacyBefore;
+    }
+    if (vendorPrivacySuffix != nil) {
+        tXCustomModel.privacySufText = privacyEnd;
+    }
+    NSString *checkboxHidden = [config objectForKey:[self methodName2KeyName:@"setCheckboxHidden"]];
+    if (checkboxHidden != nil) {
+        tXCustomModel.checkBoxIsHidden = [checkboxHidden boolValue];
+    }
+    resolve(@"");
+}
+
 -(NSArray<NSString *> *)supportedEvents {
     return @[@"onTokenSuccess", @"onTokenFailed"];
 }
@@ -366,6 +604,10 @@ RCT_EXPORT_METHOD(setUIConfig:(NSDictionary *)config resolve:(RCTPromiseResolveB
     return [UIColor colorWithRed:((float) r / 255.0f) green:((float) g / 255.0f) blue:((float) b / 255.0f) alpha:1.0f];
 }
 
+/// 是否是横屏 YES:横屏 NO:竖屏
+- (BOOL)isHorizontal:(CGSize)size {
+    return size.width > size.height;
+}
 
 @end
 
