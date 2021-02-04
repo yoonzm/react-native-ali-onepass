@@ -354,21 +354,7 @@ RCT_EXPORT_METHOD(setDialogUIConfig:(NSDictionary *)config resolve:(RCTPromiseRe
     if (statusBarHidden != nil) {
         tXCustomModel.prefersStatusBarHidden = [statusBarHidden boolValue];
     }
-    
-//    tXCustomModel.alertBarIsHidden = true;
-    
-    NSString *navColor = [config objectForKey:[self methodName2KeyName:@"setNavColor"]];
-    NSString *navText = [config objectForKey:[self methodName2KeyName:@"setNavText"]];
-    NSString *navTextColor = [config objectForKey:[self methodName2KeyName:@"setNavTextColor"]];
-    NSString *navTextSize = [config objectForKey:[self methodName2KeyName:@"setNavTextSize"]];
-    if (navText != nil) {
-        tXCustomModel.alertTitle = [[NSAttributedString alloc]initWithString:navText attributes:@{NSForegroundColorAttributeName: [self colorWithHexString:navTextColor], NSFontAttributeName:[UIFont systemFontOfSize:[navTextSize doubleValue]]}];
-    }
-    NSString *navReturnImgPath = [config objectForKey:[self methodName2KeyName:@"setNavReturnImgPath"]];
-    if (navReturnImgPath != nil) {
-        tXCustomModel.alertCloseImage = [UIImage imageNamed:navReturnImgPath];
-    }
-   
+
     NSString *dialogHeightDelta = [config objectForKey:[self methodName2KeyName:@"setDialogHeightDelta"]];
 
     CGFloat ratio = MAX(TX_SCREEN_WIDTH, TX_SCREEN_HEIGHT) / 667.0;
@@ -548,7 +534,52 @@ RCT_EXPORT_METHOD(setDialogUIConfig:(NSDictionary *)config resolve:(RCTPromiseRe
     if (checkboxHidden != nil) {
         tXCustomModel.checkBoxIsHidden = [checkboxHidden boolValue];
     }
+    
+    NSString *alertBarHidden = [config objectForKey:[self methodName2KeyName:@"setAlertBarHidden"]];
+    if (alertBarHidden != nil) {
+        bool isHiddenAlertBar = [alertBarHidden boolValue];
+        tXCustomModel.alertBarIsHidden = isHiddenAlertBar;
+        if (isHiddenAlertBar) {
+            //添加自定义控件并对自定义控件进行布局
+            __block UIButton *customBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+            [customBtn setTitle:@"关闭" forState:UIControlStateNormal];
+            NSString *alertBarCloseImgPath = [config objectForKey:[self methodName2KeyName:@"setAlertBarCloseImgPath"]];
+            [customBtn setBackgroundImage:[UIImage imageNamed:alertBarCloseImgPath] forState:UIControlStateNormal];
+            customBtn.frame = CGRectMake(0, 0, 40, 40);
+            [customBtn addTarget:self
+                       action:@selector(btnClick:)
+                       forControlEvents:UIControlEventTouchUpInside];
+            tXCustomModel.customViewBlock = ^(UIView * _Nonnull superCustomView) {
+                 [superCustomView addSubview:customBtn];
+            };
+            tXCustomModel.customViewLayoutBlock = ^(CGSize screenSize, CGRect contentViewFrame, CGRect navFrame, CGRect titleBarFrame, CGRect logoFrame, CGRect sloganFrame, CGRect numberFrame, CGRect loginFrame, CGRect changeBtnFrame, CGRect privacyFrame) {
+                CGRect frame = customBtn.frame;
+                frame.origin.x = privacyFrame.size.width + 2;
+                frame.origin.y = CGRectGetMinY(navFrame);
+//                frame.size.width = contentViewFrame.size.width - frame.origin.x * 2;
+                customBtn.frame = frame;
+            };
+        } else {
+            NSString *navColor = [config objectForKey:[self methodName2KeyName:@"setNavColor"]];
+            NSString *navText = [config objectForKey:[self methodName2KeyName:@"setNavText"]];
+            NSString *navTextColor = [config objectForKey:[self methodName2KeyName:@"setNavTextColor"]];
+            NSString *navTextSize = [config objectForKey:[self methodName2KeyName:@"setNavTextSize"]];
+            if (navText != nil) {
+                tXCustomModel.alertTitle = [[NSAttributedString alloc]initWithString:navText attributes:@{NSForegroundColorAttributeName: [self colorWithHexString:navTextColor], NSFontAttributeName:[UIFont systemFontOfSize:[navTextSize doubleValue]]}];
+            }
+            NSString *navReturnImgPath = [config objectForKey:[self methodName2KeyName:@"setNavReturnImgPath"]];
+            if (navReturnImgPath != nil) {
+                tXCustomModel.alertCloseImage = [UIImage imageNamed:navReturnImgPath];
+            }
+        }
+    }
     resolve(@"");
+}
+
+- (void)btnClick: (UIGestureRecognizer *) sender {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [[TXCommonHandler sharedInstance] cancelLoginVCAnimated:YES complete:nil];
+    });
 }
 
 -(NSArray<NSString *> *)supportedEvents {
