@@ -107,6 +107,13 @@ export default class App extends Component {
       statusBarColor: '#FFFFFF',
       lightColor: true,
       statusBarHidden: false,
+      // 弹窗使用
+      dialogHeightDelta: 100,
+      alertBarHidden: true,
+      alertBarCloseImgPath: 'onepass_close_btn',
+      alertBarCloseImgWidth: 30,
+      alertBarCloseImgHeight : 30,
+      privacyBottomOffetY:getOffsetY(325),
       // 标题栏
       navColor: '#FFFFFF',
       navTextColor: '#333333',

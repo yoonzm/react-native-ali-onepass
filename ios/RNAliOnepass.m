@@ -463,7 +463,7 @@ RCT_EXPORT_METHOD(setDialogUIConfig:(NSDictionary *)config resolve:(RCTPromiseRe
         }
         if (logBtnMarginLeftAndRight != nil) {
             width = screenSize.width - [logBtnMarginLeftAndRight floatValue] * 2;
-            x = [logBtnMarginLeftAndRight floatValue];
+            x = [logBtnMarginLeftAndRight floatValue] / 2;
         }
         return CGRectMake(x, y, width, height);
     };
@@ -530,6 +530,18 @@ RCT_EXPORT_METHOD(setDialogUIConfig:(NSDictionary *)config resolve:(RCTPromiseRe
     if (vendorPrivacySuffix != nil) {
         tXCustomModel.privacySufText = privacyEnd;
     }
+    NSString *privacyBottomOffetY = [config objectForKey:[self methodName2KeyName:@"setPrivacyBottomOffetY"]];
+    tXCustomModel.privacyFrameBlock = ^CGRect(CGSize screenSize, CGSize superViewSize, CGRect frame) {
+        CGFloat x = frame.origin.x;
+        CGFloat y = frame.origin.y;
+        CGFloat width = frame.size.width;
+        CGFloat height = frame.size.height;
+        if (privacyBottomOffetY != nil) {
+            y = [privacyBottomOffetY floatValue];
+        }
+        return CGRectMake(x, y, width, height);
+    };
+    
     NSString *checkboxHidden = [config objectForKey:[self methodName2KeyName:@"setCheckboxHidden"]];
     if (checkboxHidden != nil) {
         tXCustomModel.checkBoxIsHidden = [checkboxHidden boolValue];
@@ -542,10 +554,25 @@ RCT_EXPORT_METHOD(setDialogUIConfig:(NSDictionary *)config resolve:(RCTPromiseRe
         if (isHiddenAlertBar) {
             //添加自定义控件并对自定义控件进行布局
             __block UIButton *customBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-            [customBtn setTitle:@"关闭" forState:UIControlStateNormal];
             NSString *alertBarCloseImgPath = [config objectForKey:[self methodName2KeyName:@"setAlertBarCloseImgPath"]];
-            [customBtn setBackgroundImage:[UIImage imageNamed:alertBarCloseImgPath] forState:UIControlStateNormal];
-            customBtn.frame = CGRectMake(0, 0, 40, 40);
+            NSString *alertBarCloseImgWidth = [config objectForKey:[self methodName2KeyName:@"setAlertBarCloseImgWidth"]];
+            NSString *alertBarCloseImgHeight = [config objectForKey:[self methodName2KeyName:@"setAlertBarCloseImgHeight"]];
+            CGFloat closeWidth = 30;
+            CGFloat closehHeight = 30;
+            if (alertBarCloseImgWidth != nil) {
+                closeWidth = [alertBarCloseImgWidth floatValue];
+            }
+            if (alertBarCloseImgHeight != nil) {
+                closehHeight = [alertBarCloseImgHeight floatValue];
+            }
+            
+            if (alertBarCloseImgPath != nil) {
+                [customBtn setBackgroundImage:[UIImage imageNamed:alertBarCloseImgPath] forState:UIControlStateNormal];
+            } else {
+                [customBtn setTitle:@"关闭" forState:UIControlStateNormal];
+                [customBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+            }
+            customBtn.frame = CGRectMake(0, 0, closeWidth, closehHeight);
             [customBtn addTarget:self
                        action:@selector(btnClick:)
                        forControlEvents:UIControlEventTouchUpInside];
@@ -554,7 +581,8 @@ RCT_EXPORT_METHOD(setDialogUIConfig:(NSDictionary *)config resolve:(RCTPromiseRe
             };
             tXCustomModel.customViewLayoutBlock = ^(CGSize screenSize, CGRect contentViewFrame, CGRect navFrame, CGRect titleBarFrame, CGRect logoFrame, CGRect sloganFrame, CGRect numberFrame, CGRect loginFrame, CGRect changeBtnFrame, CGRect privacyFrame) {
                 CGRect frame = customBtn.frame;
-                frame.origin.x = privacyFrame.size.width + 2;
+                frame.origin.x = contentViewFrame.size.width - closeWidth; //screenSize.width - contentViewFrame.origin.x;
+                CGFloat ts = screenSize.width - contentViewFrame.origin.x;
                 frame.origin.y = CGRectGetMinY(navFrame);
 //                frame.size.width = contentViewFrame.size.width - frame.origin.x * 2;
                 customBtn.frame = frame;
@@ -572,7 +600,9 @@ RCT_EXPORT_METHOD(setDialogUIConfig:(NSDictionary *)config resolve:(RCTPromiseRe
                 tXCustomModel.alertCloseImage = [UIImage imageNamed:navReturnImgPath];
             }
         }
+        
     }
+    
     resolve(@"");
 }
 
