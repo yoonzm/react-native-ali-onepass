@@ -354,37 +354,22 @@ RCT_EXPORT_METHOD(setDialogUIConfig:(NSDictionary *)config resolve:(RCTPromiseRe
     if (statusBarHidden != nil) {
         tXCustomModel.prefersStatusBarHidden = [statusBarHidden boolValue];
     }
-    // 标题栏
+    
+//    tXCustomModel.alertBarIsHidden = true;
+    
     NSString *navColor = [config objectForKey:[self methodName2KeyName:@"setNavColor"]];
-    if (navColor != nil) {
-        tXCustomModel.navColor = [self colorWithHexString:navColor];
-    }
     NSString *navText = [config objectForKey:[self methodName2KeyName:@"setNavText"]];
     NSString *navTextColor = [config objectForKey:[self methodName2KeyName:@"setNavTextColor"]];
     NSString *navTextSize = [config objectForKey:[self methodName2KeyName:@"setNavTextSize"]];
-    if (navText != nil && navTextColor != nil && navTextSize != nil) {
-        tXCustomModel.navTitle = [[NSAttributedString alloc]initWithString:navText attributes:@{NSForegroundColorAttributeName: [self colorWithHexString:navTextColor], NSFontAttributeName:[UIFont systemFontOfSize:[navTextSize doubleValue]]}];
+    if (navText != nil) {
+        tXCustomModel.alertTitle = [[NSAttributedString alloc]initWithString:navText attributes:@{NSForegroundColorAttributeName: [self colorWithHexString:navTextColor], NSFontAttributeName:[UIFont systemFontOfSize:[navTextSize doubleValue]]}];
     }
     NSString *navReturnImgPath = [config objectForKey:[self methodName2KeyName:@"setNavReturnImgPath"]];
     if (navReturnImgPath != nil) {
-        tXCustomModel.navBackImage = [UIImage imageNamed:navReturnImgPath];
-        tXCustomModel.privacyNavBackImage = [UIImage imageNamed:navReturnImgPath];
+        tXCustomModel.alertCloseImage = [UIImage imageNamed:navReturnImgPath];
     }
-    NSString *navReturnImgWidth = [config objectForKey:[self methodName2KeyName:@"setNavReturnImgWidth"]];
-    NSString *navReturnImgHeight = [config objectForKey:[self methodName2KeyName:@"setNavReturnImgHeight"]];
-    tXCustomModel.navBackButtonFrameBlock = ^CGRect(CGSize screenSize, CGSize superViewSize, CGRect frame) {
-        CGFloat x = frame.origin.x;
-        CGFloat y = frame.origin.y;
-        CGFloat width = frame.size.width;
-        CGFloat height = frame.size.height;
-        if (navReturnImgWidth != nil) {
-            width = [navReturnImgWidth floatValue];
-        }
-        if (navReturnImgHeight != nil) {
-            height = [navReturnImgHeight floatValue];
-        }
-        return CGRectMake(x, y, width, height);
-    };
+   
+    NSString *dialogHeightDelta = [config objectForKey:[self methodName2KeyName:@"setDialogHeightDelta"]];
 
     CGFloat ratio = MAX(TX_SCREEN_WIDTH, TX_SCREEN_HEIGHT) / 667.0;
     tXCustomModel.contentViewFrameBlock = ^CGRect(CGSize screenSize, CGSize contentSize, CGRect frame) {
@@ -402,7 +387,7 @@ RCT_EXPORT_METHOD(setDialogUIConfig:(NSDictionary *)config resolve:(RCTPromiseRe
             alertX = TX_Alert_Default_Left_Padding * ratio;
             alertWidth = screenSize.width - alertX * 2;
             alertY = TX_Alert_Default_Top_Padding * ratio;
-            alertHeight = screenSize.height - alertY * 2;
+            alertHeight = screenSize.height - alertY * 2 - [dialogHeightDelta floatValue];
         }
         return CGRectMake(alertX, alertY, alertWidth, alertHeight);
     };
