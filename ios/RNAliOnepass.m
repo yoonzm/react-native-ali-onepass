@@ -340,6 +340,17 @@ RCT_EXPORT_METHOD(setUIConfig:(NSDictionary *)config resolve:(RCTPromiseResolveB
     if (checkboxHidden != nil) {
         tXCustomModel.checkBoxIsHidden = [checkboxHidden boolValue];
     }
+    NSString *privacyBottomOffsetY = [config objectForKey:[self methodName2KeyName:@"setPrivacyBottomOffsetY"]];
+    tXCustomModel.privacyFrameBlock = ^CGRect(CGSize screenSize, CGSize superViewSize, CGRect frame) {
+        CGFloat x = frame.origin.x;
+        CGFloat y = frame.origin.y;
+        CGFloat width = frame.size.width;
+        CGFloat height = frame.size.height;
+        if (privacyBottomOffsetY != nil) {
+            y = y - [privacyBottomOffsetY floatValue];
+        }
+        return CGRectMake(x, y, width, height);
+    };
     resolve(@"");
 }
 
@@ -530,23 +541,23 @@ RCT_EXPORT_METHOD(setDialogUIConfig:(NSDictionary *)config resolve:(RCTPromiseRe
     if (vendorPrivacySuffix != nil) {
         tXCustomModel.privacySufText = privacyEnd;
     }
-    NSString *privacyBottomOffetY = [config objectForKey:[self methodName2KeyName:@"setPrivacyBottomOffetY"]];
+    NSString *privacyBottomOffsetY = [config objectForKey:[self methodName2KeyName:@"setPrivacyBottomOffsetY"]];
     tXCustomModel.privacyFrameBlock = ^CGRect(CGSize screenSize, CGSize superViewSize, CGRect frame) {
         CGFloat x = frame.origin.x;
         CGFloat y = frame.origin.y;
         CGFloat width = frame.size.width;
         CGFloat height = frame.size.height;
-        if (privacyBottomOffetY != nil) {
-            y = [privacyBottomOffetY floatValue];
+        if (privacyBottomOffsetY != nil) {
+            y = [privacyBottomOffsetY floatValue];
         }
         return CGRectMake(x, y, width, height);
     };
-    
+
     NSString *checkboxHidden = [config objectForKey:[self methodName2KeyName:@"setCheckboxHidden"]];
     if (checkboxHidden != nil) {
         tXCustomModel.checkBoxIsHidden = [checkboxHidden boolValue];
     }
-    
+
     NSString *alertBarHidden = [config objectForKey:[self methodName2KeyName:@"setAlertBarHidden"]];
     if (alertBarHidden != nil) {
         bool isHiddenAlertBar = [alertBarHidden boolValue];
@@ -565,7 +576,7 @@ RCT_EXPORT_METHOD(setDialogUIConfig:(NSDictionary *)config resolve:(RCTPromiseRe
             if (alertBarCloseImgHeight != nil) {
                 closehHeight = [alertBarCloseImgHeight floatValue];
             }
-            
+
             if (alertBarCloseImgPath != nil) {
                 [customBtn setBackgroundImage:[UIImage imageNamed:alertBarCloseImgPath] forState:UIControlStateNormal];
             } else {
@@ -600,9 +611,9 @@ RCT_EXPORT_METHOD(setDialogUIConfig:(NSDictionary *)config resolve:(RCTPromiseRe
                 tXCustomModel.alertCloseImage = [UIImage imageNamed:navReturnImgPath];
             }
         }
-        
+
     }
-    
+
     resolve(@"");
 }
 
