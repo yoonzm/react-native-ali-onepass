@@ -1,7 +1,9 @@
 
 package com.ali.onepass;
 
+import android.content.pm.ActivityInfo;
 import android.graphics.Color;
+import android.os.Build;
 import android.util.Log;
 import android.widget.ImageView;
 
@@ -20,12 +22,16 @@ import com.mobile.auth.gatewayauth.PreLoginResultListener;
 import com.mobile.auth.gatewayauth.TokenResultListener;
 import com.mobile.auth.gatewayauth.model.TokenRet;
 
+import static com.ali.onepass.AppUtils.dp2px;
+
 public class RNAliOnepassModule extends ReactContextBaseJavaModule implements TokenResultListener {
 
     private final ReactApplicationContext reactContext;
     private PhoneNumberAuthHelper phoneNumberAuthHelper;
     private int prefetchNumberTimeout = 3000;
     private int fetchNumberTimeout = 3000;
+    private int mScreenWidthDp;
+    private int mScreenHeightDp;
 
     public RNAliOnepassModule(ReactApplicationContext reactContext) {
         super(reactContext);
@@ -209,6 +215,102 @@ public class RNAliOnepassModule extends ReactContextBaseJavaModule implements To
         promise.resolve("");
     }
 
+ // dialog登录
+    @ReactMethod
+    public void setDialogUIConfig(final ReadableMap config, final Promise promise) {
+        phoneNumberAuthHelper.removeAuthRegisterXmlConfig();
+        phoneNumberAuthHelper.removeAuthRegisterViewConfig();
+        int authPageOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT;
+        if (Build.VERSION.SDK_INT == 26) {
+            authPageOrientation = ActivityInfo.SCREEN_ORIENTATION_BEHIND;
+        }
+        updateScreenSize(authPageOrientation);
+        int dialogWidth = (int) (mScreenWidthDp * 0.8f);
+        int dialogHeight = (int) (mScreenHeightDp * 0.65f);
+        int logBtnOffset = dialogHeight / 2;
+
+        AuthUIConfig.Builder builder = new AuthUIConfig.Builder();
+        setSloganUI(builder, config);
+        setNavBarUI(builder, config);
+        setLogBtnUI(builder, config);
+        setSwitchAccUI(builder, config);
+        setStatusBarUI(builder, config);
+        setLogoUI(builder, config);
+        setNumberUI(builder, config);
+        setPrivacyUI(builder, config);
+        setOtherUI(builder, config);
+
+        setDialogUIHeight(builder, config, dialogHeight);
+        builder.setLogBtnWidth(dialogWidth - 30)
+//                .setAuthPageActIn("in_activity", "out_activity")
+//                .setAuthPageActOut("in_activity", "out_activity")
+                .setDialogWidth(dialogWidth)
+//                .setDialogHeight(dialogHeight)
+                .setDialogBottom(false)
+                //.setDialogAlpha(82)
+//                .setLogoImgPath("ic_launcher")
+                .setScreenOrientation(authPageOrientation);
+
+        phoneNumberAuthHelper.setAuthUIConfig(builder.create());
+        promise.resolve("");
+    }
+
+
+    // 弹窗授权⻚⾯
+    private void configLoginTokenPortDialog(ReadableMap config) {
+        // initDynamicView();
+        phoneNumberAuthHelper.removeAuthRegisterXmlConfig();
+        phoneNumberAuthHelper.removeAuthRegisterViewConfig();
+        int authPageOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT;
+        if (Build.VERSION.SDK_INT == 26) {
+            authPageOrientation = ActivityInfo.SCREEN_ORIENTATION_BEHIND;
+        }
+        updateScreenSize(authPageOrientation);
+        int dialogWidth = (int) (mScreenWidthDp * 0.8f);
+        int dialogHeight = (int) (mScreenHeightDp * 0.65f);
+
+        int logBtnOffset = dialogHeight / 2;
+        phoneNumberAuthHelper.setAuthUIConfig(
+                new AuthUIConfig.Builder()
+                        // .setAppPrivacyOne("《自定义隐私协议》", "https://www.baidu.com")
+                        .setAppPrivacyColor(Color.GRAY, Color.parseColor("#FFA346"))
+                        .setPrivacyState(false)
+                        .setCheckboxHidden(true)
+//            .setNavHidden(false)
+//            .setNavColor(Color.parseColor("#FFA346"))
+//            .setNavReturnImgPath("icon_close")
+                        .setWebNavColor(Color.parseColor("#FFA346"))
+                        .setAuthPageActIn("in_activity", "out_activity")
+                        .setAuthPageActOut("in_activity", "out_activity")
+                        .setVendorPrivacyPrefix("《")
+                        .setVendorPrivacySuffix("》")
+                        .setLogoImgPath("ic_launcher")
+                        .setLogBtnWidth(dialogWidth - 30)
+                        .setLogBtnMarginLeftAndRight(15)
+                        .setLogBtnBackgroundPath("button")
+                        .setLogoOffsetY(48)
+                        .setLogoWidth(42)
+                        .setLogoHeight(42)
+                        .setLogBtnOffsetY(logBtnOffset)
+                        .setSloganText("为了您的账号安全，请先绑定手机号")
+                        .setSloganOffsetY(logBtnOffset - 100)
+                        .setSloganTextSize(11)
+                        .setNumFieldOffsetY(logBtnOffset - 50)
+                        .setSwitchOffsetY(logBtnOffset + 50)
+                        .setSwitchAccTextSize(11)
+//            .setPageBackgroundPath("dialog_page_background")
+                        .setNumberSize(17)
+                        .setLogBtnHeight(38)
+                        .setLogBtnTextSize(16)
+                        .setDialogWidth(dialogWidth)
+                        .setDialogHeight(dialogHeight)
+                        .setDialogBottom(false)
+//            .setDialogAlpha(82)
+                        .setScreenOrientation(authPageOrientation)
+                        .create()
+        );
+    }
+
     /**
      * 将方法名转为key名
      * @param methodName
@@ -226,6 +328,12 @@ public class RNAliOnepassModule extends ReactContextBaseJavaModule implements To
         String otherChar = result.substring(1); // 首字母
         Log.d(methodName, firstChar.toLowerCase() + otherChar);
         return firstChar.toLowerCase() + otherChar;
+    }
+
+    private void setDialogUIHeight(AuthUIConfig.Builder builder, ReadableMap config, int defaultHeight) {
+        if (config.hasKey(methodName2KeyName("setDialogHeightDelta"))) {
+            builder.setDialogHeight(defaultHeight - config.getInt(methodName2KeyName("setDialogHeightDelta")));
+        }
     }
 
     /**
@@ -441,6 +549,12 @@ public class RNAliOnepassModule extends ReactContextBaseJavaModule implements To
         if (config.hasKey(methodName2KeyName("setCheckboxHidden"))) {
             builder.setCheckboxHidden(config.getBoolean(methodName2KeyName("setCheckboxHidden")));
         }
+        if (config.hasKey(methodName2KeyName("setPrivacyOffsetY"))) {
+            builder.setPrivacyOffsetY(config.getInt(methodName2KeyName("setPrivacyOffsetY")));
+        }
+        if (config.hasKey(methodName2KeyName("setPrivacyOffsetY_B"))) {
+            builder.setPrivacyOffsetY_B(config.getInt(methodName2KeyName("setPrivacyOffsetY_B")));
+        }
     }
 
     /**
@@ -457,5 +571,12 @@ public class RNAliOnepassModule extends ReactContextBaseJavaModule implements To
         } catch (RuntimeException e) {
             Log.e("ERROR", "java.lang.RuntimeException: Trying to invoke Javascript before CatalystInstance has been set!");
         }
+    }
+
+    private void updateScreenSize(int authPageScreenOrientation) {
+        int screenHeightDp = AppUtils.px2dp(reactContext, AppUtils.getPhoneHeightPixels(reactContext));
+        int screenWidthDp = AppUtils.px2dp(reactContext, AppUtils.getPhoneWidthPixels(reactContext));
+        mScreenWidthDp = screenWidthDp;
+        mScreenHeightDp = screenHeightDp;
     }
 }

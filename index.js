@@ -65,6 +65,10 @@ export async function setUIConfig(config) {
   return await RNAliOnepass.setUIConfig(config);
 }
 
+export async function setDialogUIConfig(config) {
+  return await RNAliOnepass.setDialogUIConfig(config);
+}
+
 /**
  * 支持的监听事件
  * @type {{code, msg, requestCode, token, vendorName}}
