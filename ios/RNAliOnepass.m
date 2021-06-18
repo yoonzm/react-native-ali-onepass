@@ -192,7 +192,22 @@ RCT_EXPORT_METHOD(setUIConfig:(NSDictionary *)config resolve:(RCTPromiseResolveB
     if (logoHidden != nil) {
         tXCustomModel.logoIsHidden = [logoHidden boolValue];
     }
+
+    NSString *alertlogoWidth = [config objectForKey:[self methodName2KeyName:@"setLogoWidth"]];
+    NSString *alertlogoHeight = [config objectForKey:[self methodName2KeyName:@"setLogoHeight"]];
+    
+    CGFloat logoWidth = 30;
+    CGFloat logoHeight = 30;
+    if (alertlogoWidth != nil) {
+        logoWidth = [alertlogoWidth floatValue];
+    }
+    if (alertlogoHeight != nil) {
+        logoHeight = [alertlogoHeight floatValue];
+    }
+
     NSString *logoOffsetY = [config objectForKey:[self methodName2KeyName:@"setLogoOffsetY"]];
+    NSString *logoOffsetX = [config objectForKey:[self methodName2KeyName:@"setLogoOffsetX"]];
+
     tXCustomModel.logoFrameBlock = ^CGRect(CGSize screenSize, CGSize superViewSize, CGRect frame) {
         CGFloat x = frame.origin.x;
         CGFloat y = frame.origin.y;
@@ -201,8 +216,11 @@ RCT_EXPORT_METHOD(setUIConfig:(NSDictionary *)config resolve:(RCTPromiseResolveB
         if (logoOffsetY != nil) {
             y = [logoOffsetY floatValue];
         }
-        return CGRectMake(x, y, width, height);
-    };
+        if (logoOffsetX != nil) {
+            x = [logoOffsetX floatValue];
+        }
+        return CGRectMake(x, y, logoWidth, logoHeight);
+    }; 
     // number
     NSString *numberColor = [config objectForKey:[self methodName2KeyName:@"setNumberColor"]];
     if (numberColor != nil) {
