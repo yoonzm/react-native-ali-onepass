@@ -4,7 +4,7 @@ export function init(businessId: string): Promise<any>;
  * 调用下面接口前先校验是否支持
  * @return {Promise<*>}
  */
-export function checkEnvAvailable(): Promise<any>;
+export function checkEnvAvailable(type: 1 | 2): Promise<any>;
 
 /*******************************************(以下初始化后再调用)***********************************************/
 

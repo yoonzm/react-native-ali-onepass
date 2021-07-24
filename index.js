@@ -11,8 +11,8 @@ export async function init(businessId) {
  * 调用下面接口前先校验是否支持
  * @return {Promise<*>}
  */
-export async function checkEnvAvailable() {
-  return await RNAliOnepass.checkEnvAvailable();
+export async function checkEnvAvailable(type) {
+  return await RNAliOnepass.checkEnvAvailable(type);
 }
 
 /*******************************************(以下初始化后再调用)***********************************************/

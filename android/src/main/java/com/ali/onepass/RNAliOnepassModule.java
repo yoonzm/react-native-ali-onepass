@@ -25,7 +25,7 @@ import com.mobile.auth.gatewayauth.model.TokenRet;
 import static com.ali.onepass.AppUtils.dp2px;
 
 public class RNAliOnepassModule extends ReactContextBaseJavaModule implements TokenResultListener {
-
+    static Promise COMMON_PROMISE = null;
     private final ReactApplicationContext reactContext;
     private PhoneNumberAuthHelper phoneNumberAuthHelper;
     private int prefetchNumberTimeout = 3000;
@@ -68,16 +68,22 @@ public class RNAliOnepassModule extends ReactContextBaseJavaModule implements To
      * SDK 环境检查函数,检查终端是否支持号码认证
      */
     @ReactMethod
-    public void checkEnvAvailable(final Promise promise) {
-        if (!checkInit(promise)) {
-            return;
-        }
-        boolean available = phoneNumberAuthHelper.checkEnvAvailable();
-        promise.resolve(available);
+    public void checkEnvAvailable(final int type, final Promise promise)  {
+      if (!checkInit(promise)) {
+        return;
+      }
+      try {
+          COMMON_PROMISE = promise;
+          phoneNumberAuthHelper.checkEnvAvailable(type);
+
+      } catch (Exception e) {
+          promise.reject("-1" ,e.toString());
+      }
     }
 
     @Override
     public void onTokenSuccess(String s) {
+
         WritableMap writableMap = Arguments.createMap();
         TokenRet tokenRet = null;
         try {
@@ -90,11 +96,16 @@ public class RNAliOnepassModule extends ReactContextBaseJavaModule implements To
         } catch (Exception e) {
             e.printStackTrace();
         }
+        if (COMMON_PROMISE != null) {
+          COMMON_PROMISE.resolve(writableMap);
+          COMMON_PROMISE = null;
+      }
         sendEvent("onTokenSuccess", writableMap);
     }
 
     @Override
     public void onTokenFailed(String s) {
+
         WritableMap writableMap = Arguments.createMap();
         TokenRet tokenRet = null;
         try {
@@ -105,6 +116,10 @@ public class RNAliOnepassModule extends ReactContextBaseJavaModule implements To
             writableMap.putInt("requestCode", tokenRet.getRequestCode());
         } catch (Exception e) {
             e.printStackTrace();
+        }
+        if (COMMON_PROMISE != null) {
+          COMMON_PROMISE.resolve(writableMap);
+          COMMON_PROMISE = null;
         }
         sendEvent("onTokenFailed", writableMap);
     }

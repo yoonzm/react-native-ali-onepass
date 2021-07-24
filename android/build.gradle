@@ -48,6 +48,7 @@ repositories {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.facebook.react:react-native:+'
+    implementation 'com.android.support:appcompat-v7:23.2.1'
     implementation(name:'phoneNumber-L-AuthSDK-2.12.1.2', ext: 'aar')
     implementation(name:'crashshield-2.0.3-release', ext: 'aar')
     implementation(name:'logger-2.0.3-release', ext: 'aar')
