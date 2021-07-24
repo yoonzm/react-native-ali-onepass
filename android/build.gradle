@@ -46,8 +46,11 @@ repositories {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.facebook.react:react-native:+'
-    compile(name: 'phoneNumber-L-AuthSDK-2.11.1', ext: 'aar')
-    compile 'com.alibaba:fastjson:1.2.60' // 配置对gson的依赖
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.facebook.react:react-native:+'
+    implementation(name:'phoneNumber-L-AuthSDK-2.12.1.2', ext: 'aar')
+    implementation(name:'crashshield-2.0.3-release', ext: 'aar')
+    implementation(name:'logger-2.0.3-release', ext: 'aar')
+    implementation(name:'main-2.0.3-release', ext: 'aar')
+    implementation 'com.alibaba:fastjson:1.2.60' // 配置对gson的依赖
 }
