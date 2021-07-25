@@ -162,7 +162,6 @@ public class RNAliOnepassModule extends ReactContextBaseJavaModule implements To
             return;
         }
         phoneNumberAuthHelper.getLoginToken(reactContext, fetchNumberTimeout);
-        COMMON_PROMISE = promise;
     }
 
     /**
@@ -174,7 +173,7 @@ public class RNAliOnepassModule extends ReactContextBaseJavaModule implements To
     @ReactMethod
     public void quitLoginPage(final Promise promise) {
         phoneNumberAuthHelper.quitLoginPage();
-        COMMON_PROMISE = promise
+        COMMON_PROMISE = promise;
     }
 
     /**
@@ -185,7 +184,7 @@ public class RNAliOnepassModule extends ReactContextBaseJavaModule implements To
     @ReactMethod
     public void hideLoginLoading(final Promise promise) {
         phoneNumberAuthHelper.hideLoginLoading();
-        COMMON_PROMISE = promise
+        COMMON_PROMISE = promise;
     }
 
 
@@ -231,7 +230,7 @@ public class RNAliOnepassModule extends ReactContextBaseJavaModule implements To
         setPrivacyUI(builder, config);
         setOtherUI(builder, config);
         phoneNumberAuthHelper.setAuthUIConfig(builder.create());
-        COMMON_PROMISE = promise
+        COMMON_PROMISE = promise;
 
     }
 
@@ -272,7 +271,7 @@ public class RNAliOnepassModule extends ReactContextBaseJavaModule implements To
                 .setScreenOrientation(authPageOrientation);
 
         phoneNumberAuthHelper.setAuthUIConfig(builder.create());
-        COMMON_PROMISE = promise
+        COMMON_PROMISE = promise;
 
     }
 
@@ -393,6 +392,10 @@ public class RNAliOnepassModule extends ReactContextBaseJavaModule implements To
         if (config.hasKey(methodName2KeyName("setWebNavTextSize"))) {
             builder.setWebNavTextSize(config.getInt(methodName2KeyName("setWebNavTextSize")));
         }
+
+        if (config.hasKey(methodName2KeyName("setNavHidden"))) {
+          builder.setNavHidden(config.getBoolean(methodName2KeyName("setNavHidden")));
+      }
     }
 
     /**
@@ -582,7 +585,9 @@ public class RNAliOnepassModule extends ReactContextBaseJavaModule implements To
      * 其他
      */
     private void setOtherUI(AuthUIConfig.Builder builder, ReadableMap config) {
-
+      if (config.hasKey(methodName2KeyName("setPageBackgroundPath"))) {
+        builder.setPageBackgroundPath(config.getString(methodName2KeyName("setPageBackgroundPath")));
+    }
     }
 
     private void sendEvent(String eventName, WritableMap params) {

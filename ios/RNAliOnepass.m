@@ -56,11 +56,7 @@ RCT_EXPORT_METHOD(checkEnvAvailable:(RCTPromiseResolveBlock)resolve reject:(RCTP
     }
     [tXCommonHandler checkEnvAvailableWithComplete:^(NSDictionary * _Nullable resultDic) {
         NSString *resultCode = [resultDic objectForKey:@"resultCode"];
-        if(resultCode==PNSCodeSuccess) {
-            resolve(@"");
-        } else {
-            reject(resultCode, [resultDic objectForKey:@"msg"], nil);
-        }
+        resolve(resultDic);
     }];
 }
 

@@ -12,7 +12,10 @@ export async function init(businessId) {
  * @return {Promise<*>}
  */
 export async function checkEnvAvailable(type) {
-  return await RNAliOnepass.checkEnvAvailable(type);
+  if (Platform.OS === 'android') {
+    return await RNAliOnepass.checkEnvAvailable(type);
+  }
+  return await RNAliOnepass.checkEnvAvailable();
 }
 
 /*******************************************(以下初始化后再调用)***********************************************/
