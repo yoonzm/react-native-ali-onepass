@@ -99,8 +99,10 @@ public class RNAliOnepassModule extends ReactContextBaseJavaModule implements To
         if (COMMON_PROMISE != null) {
           COMMON_PROMISE.resolve(writableMap);
           COMMON_PROMISE = null;
-      }
-        sendEvent("onTokenSuccess", writableMap);
+        } else {
+          sendEvent("onTokenSuccess", writableMap);
+        }
+        
     }
 
     @Override
@@ -120,8 +122,10 @@ public class RNAliOnepassModule extends ReactContextBaseJavaModule implements To
         if (COMMON_PROMISE != null) {
           COMMON_PROMISE.resolve(writableMap);
           COMMON_PROMISE = null;
+        } else {
+          sendEvent("onTokenFailed", writableMap);
         }
-        sendEvent("onTokenFailed", writableMap);
+        
     }
 
     /**
@@ -158,7 +162,7 @@ public class RNAliOnepassModule extends ReactContextBaseJavaModule implements To
             return;
         }
         phoneNumberAuthHelper.getLoginToken(reactContext, fetchNumberTimeout);
-        promise.resolve("");
+        COMMON_PROMISE = promise;
     }
 
     /**
@@ -170,7 +174,7 @@ public class RNAliOnepassModule extends ReactContextBaseJavaModule implements To
     @ReactMethod
     public void quitLoginPage(final Promise promise) {
         phoneNumberAuthHelper.quitLoginPage();
-        promise.resolve("");
+        COMMON_PROMISE = promise
     }
 
     /**
@@ -181,7 +185,7 @@ public class RNAliOnepassModule extends ReactContextBaseJavaModule implements To
     @ReactMethod
     public void hideLoginLoading(final Promise promise) {
         phoneNumberAuthHelper.hideLoginLoading();
-        promise.resolve("");
+        COMMON_PROMISE = promise
     }
 
 
@@ -227,7 +231,8 @@ public class RNAliOnepassModule extends ReactContextBaseJavaModule implements To
         setPrivacyUI(builder, config);
         setOtherUI(builder, config);
         phoneNumberAuthHelper.setAuthUIConfig(builder.create());
-        promise.resolve("");
+        COMMON_PROMISE = promise
+
     }
 
  // dialog登录
@@ -267,7 +272,8 @@ public class RNAliOnepassModule extends ReactContextBaseJavaModule implements To
                 .setScreenOrientation(authPageOrientation);
 
         phoneNumberAuthHelper.setAuthUIConfig(builder.create());
-        promise.resolve("");
+        COMMON_PROMISE = promise
+
     }
 
 
