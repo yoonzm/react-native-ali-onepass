@@ -120,7 +120,7 @@ public class RNAliOnepassModule extends ReactContextBaseJavaModule implements To
             e.printStackTrace();
         }
         if (COMMON_PROMISE != null) {
-          COMMON_PROMISE.resolve(writableMap);
+          COMMON_PROMISE.reject(tokenRet.getCode(), writableMap);
           COMMON_PROMISE = null;
         } else {
           sendEvent("onTokenFailed", writableMap);
@@ -162,6 +162,7 @@ public class RNAliOnepassModule extends ReactContextBaseJavaModule implements To
             return;
         }
         phoneNumberAuthHelper.getLoginToken(reactContext, fetchNumberTimeout);
+        COMMON_PROMISE = promise;
     }
 
     /**
@@ -230,7 +231,7 @@ public class RNAliOnepassModule extends ReactContextBaseJavaModule implements To
         setPrivacyUI(builder, config);
         setOtherUI(builder, config);
         phoneNumberAuthHelper.setAuthUIConfig(builder.create());
-        COMMON_PROMISE = promise;
+        promise.resolve(true);
 
     }
 
@@ -273,62 +274,6 @@ public class RNAliOnepassModule extends ReactContextBaseJavaModule implements To
         phoneNumberAuthHelper.setAuthUIConfig(builder.create());
         COMMON_PROMISE = promise;
 
-    }
-
-
-    // 弹窗授权⻚⾯
-    private void configLoginTokenPortDialog(ReadableMap config) {
-        // initDynamicView();
-        phoneNumberAuthHelper.removeAuthRegisterXmlConfig();
-        phoneNumberAuthHelper.removeAuthRegisterViewConfig();
-        int authPageOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT;
-        if (Build.VERSION.SDK_INT == 26) {
-            authPageOrientation = ActivityInfo.SCREEN_ORIENTATION_BEHIND;
-        }
-        updateScreenSize(authPageOrientation);
-        int dialogWidth = (int) (mScreenWidthDp * 0.8f);
-        int dialogHeight = (int) (mScreenHeightDp * 0.65f);
-
-        int logBtnOffset = dialogHeight / 2;
-        phoneNumberAuthHelper.setAuthUIConfig(
-                new AuthUIConfig.Builder()
-                        // .setAppPrivacyOne("《自定义隐私协议》", "https://www.baidu.com")
-                        .setAppPrivacyColor(Color.GRAY, Color.parseColor("#FFA346"))
-                        .setPrivacyState(false)
-                        .setCheckboxHidden(true)
-//            .setNavHidden(false)
-//            .setNavColor(Color.parseColor("#FFA346"))
-//            .setNavReturnImgPath("icon_close")
-                        .setWebNavColor(Color.parseColor("#FFA346"))
-                        .setAuthPageActIn("in_activity", "out_activity")
-                        .setAuthPageActOut("in_activity", "out_activity")
-                        .setVendorPrivacyPrefix("《")
-                        .setVendorPrivacySuffix("》")
-                        .setLogoImgPath("ic_launcher")
-                        .setLogBtnWidth(dialogWidth - 30)
-                        .setLogBtnMarginLeftAndRight(15)
-                        .setLogBtnBackgroundPath("button")
-                        .setLogoOffsetY(48)
-                        .setLogoWidth(42)
-                        .setLogoHeight(42)
-                        .setLogBtnOffsetY(logBtnOffset)
-                        .setSloganText("为了您的账号安全，请先绑定手机号")
-                        .setSloganOffsetY(logBtnOffset - 100)
-                        .setSloganTextSize(11)
-                        .setNumFieldOffsetY(logBtnOffset - 50)
-                        .setSwitchOffsetY(logBtnOffset + 50)
-                        .setSwitchAccTextSize(11)
-//            .setPageBackgroundPath("dialog_page_background")
-                        .setNumberSize(17)
-                        .setLogBtnHeight(38)
-                        .setLogBtnTextSize(16)
-                        .setDialogWidth(dialogWidth)
-                        .setDialogHeight(dialogHeight)
-                        .setDialogBottom(false)
-//            .setDialogAlpha(82)
-                        .setScreenOrientation(authPageOrientation)
-                        .create()
-        );
     }
 
     /**

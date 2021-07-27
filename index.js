@@ -86,6 +86,9 @@ export const EVENTS = {
  * @type {{"600000": number, "600001": number, "600002": number, "600004": number, "600005": number, "600007": number, "600008": number, "600009": number, "600010": number, "600011": number, "600012": number, "600013": number, "600014": number, "600015": number, "600017": number, "600021": number, "700000": number, "700001": number, "700002": number, "700003": number, "700004": number}}
  */
 export const RESULT_CODES = {
+  TOKENSUCCESS: '600000', // 获取 token 成功
+  AUTHPAGESUCCESS: '600001', // 唤起授权⻚成功
+  SWITCHAUTHWAY: '700001', // 用户点击切换按钮
   600000: 600000, // 获取 token 成功
   600001: 600001, // 唤起授权⻚成功
   600002: 600002, // 唤起授权⻚失败
