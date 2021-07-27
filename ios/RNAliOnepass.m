@@ -56,7 +56,11 @@ RCT_EXPORT_METHOD(checkEnvAvailable:(RCTPromiseResolveBlock)resolve reject:(RCTP
     }
     [tXCommonHandler checkEnvAvailableWithComplete:^(NSDictionary * _Nullable resultDic) {
         NSString *resultCode = [resultDic objectForKey:@"resultCode"];
-        resolve(resultDic);
+        if(resultCode==PNSCodeSuccess) {
+            resolve(resultDic);
+        } else {
+            reject(resultCode, [resultDic objectForKey:@"msg"], nil);
+        }
     }];
 }
 
@@ -86,8 +90,6 @@ RCT_EXPORT_METHOD(onePass:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseReje
         NSString *msg = [resultDic objectForKey:@"msg"];
         NSString *token = [resultDic objectForKey:@"token"];
         if(resultCode==PNSCodeSuccess
-           || resultCode==PNSCodeLoginControllerPresentSuccess
-           || resultCode==PNSCodeLoginControllerClickLoginBtn
            || resultCode==PNSCodeLoginControllerClickCheckBoxBtn
               || resultCode==PNSCodeLoginControllerClickProtocol
            ) {
@@ -96,6 +98,18 @@ RCT_EXPORT_METHOD(onePass:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseReje
                                                              @"code": resultCode!=nil?resultCode:@"",
                                                @"token": token!=nil ? token : @""
                                                }];
+        } else if (resultCode==PNSCodeLoginControllerPresentSuccess) {
+            resolve(@{
+                        @"msg": msg!=nil ? msg: @"",
+                        @"code": resultCode!=nil?resultCode:@"",
+                    });
+        } else if (resultCode==PNSCodeLoginControllerClickLoginBtn) {
+            
+            NSError *error = [[NSError alloc] initWithDomain:msg code:[resultCode intValue] userInfo:@{
+                @"msg": msg!=nil ? msg: @"",
+                @"code": resultCode!=nil?resultCode:@"",
+            }];
+            reject(resultCode, msg, error);
         } else {
             [self sendEventWithName:@"onTokenFailed" body:@{
                                                             @"msg": msg!=nil ? msg: @"",
@@ -103,7 +117,7 @@ RCT_EXPORT_METHOD(onePass:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseReje
                                                }];
         }
     }];
-    resolve(@"");
+    // resolve(@"");
 }
 
 // 退出登录授权
