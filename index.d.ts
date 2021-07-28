@@ -1,5 +1,88 @@
 import { EmitterSubscription } from 'react-native';
 
+
+
+export type UIConfig = {
+  /** --start 仅限安卓 --- */
+  lightColor: boolean, // 状态栏亮色或暗色
+  statusBarHidden: true, // 状态栏显示与隐藏
+  pageBackgroundPath: string, // 背景图片地址
+  /** --end 仅限安卓 --- */
+
+  // nav相关
+  navColor: string, // nav颜色
+  navTextColor: string, // nav文字颜色
+  navText: string, // nav文字内容
+  navTextSize: number, // nav文字大小
+  navHidden: true, // nav显示与隐藏
+ 
+  // 协议webview配置
+  webNavColor: string, // nav颜色
+  webNavTextColor: string, // nav文字颜色
+  webNavTextSize: number, // nav文字内容
+  navReturnImgPath: string, // 返回按钮图片地址
+
+  // logo相关
+  logoImgPath: string,
+  logoHidden: boolean,
+  logoWidth: number,
+  logoHeight: number,
+  logoOffsetY: number, // logo 竖直方向位置
+
+
+  // 手机号掩码
+  numberColor: string,
+  numberSize: number,
+
+  // slogan相关
+  sloganText: string,
+  sloganTextColor: string,
+  sloganTextSize: number,
+  sloganOffsetY: number,
+
+  // 登录按钮相关 
+  logBtnText: string,
+  logBtnTextColor: string,
+  logBtnTextSize: number,
+  logBtnMarginLeftAndRight: number, // 登录按钮左右margin
+
+  // 登录按钮背景 ios
+  logBtnBackgroundPaths: string[],
+  // 登录按钮背景 android
+  logBtnBackgroundPath: string,
+  
+  // 其他登录方式
+  switchAccText: string,
+  switchAccTextSize: number,
+  switchAccTextColor: string,
+
+  // 协议栏
+  privacyBefore: string, // 协议前面的文字
+  privacyEnd: string, // 协议后面的文字
+  vendorPrivacyPrefix: string, // 运营商协议前面的文字
+  vendorPrivacySuffix: string, // 运营商协议后面的文字
+  checkboxHidden: boolean, // checkBox框的显示和隐藏
+  privacyState: boolean, // checkBox选中情况
+  appPrivacyOneName: string, // 自定义协议的名称
+  appPrivacyOneUrl: string, // 自定义协议的地址
+  privacyTextSize: number,
+  appPrivacyBaseColor: string,
+  appPrivacyColor: string,
+
+    // 弹窗使用
+  dialogHeightDelta: number,
+  alertBarHidden: boolean,
+  alertBarCloseImgPath: string,
+  alertBarCloseImgWidth: number,
+  alertBarCloseImgHeight: number,
+}; // 提示：安卓端图片需要放在 drawable 下，ios端图片需要放在 Images.xcassets 下
+
+
+/**
+ * 初始化
+ * @param businessId 初始化密钥
+ * @return {Promise<*>}
+ */
 export function init(businessId: string): Promise<any>;
 
 /**
@@ -41,12 +124,12 @@ export function quitLoginPage(): Promise<any>;
 export function hideLoginLoading(): Promise<any>;
 
 /**
- * setUIConfig
+ * 设置授权页面UI
  * @param config
  */
-export function setUIConfig(config: any): void;
+export function setUIConfig(config: UIConfig): void;
 
-export function setDialogUIConfig(config: any): void;
+export function setDialogUIConfig(config: UIConfig): void;
 
 /**
  * 支持的监听事件
@@ -66,6 +149,8 @@ export const RESULT_CODES: {
   AUTHPAGESUCCESS: '600001', // 唤起授权⻚成功
   SWITCHAUTHWAY: '700001', // 用户点击切换按钮
   PTAVICY_CLICK: '700004', // 点击协议富文本文字事件
+  DEVICE_SUPPORT: '600024', // 终端环境支持认证
+  600024: '600024', // 终端环境支持认证
   600000: '600000', // 获取 token 成功
   600001: '600001', // 唤起授权⻚成功
   600002: '600002', // 唤起授权⻚失败
