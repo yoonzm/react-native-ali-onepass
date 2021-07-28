@@ -1,5 +1,5 @@
 {
-  "name": "react-native-ali-onepass",
+  "name": "react-native-onepass-alibaba",
   "version": "2.1.0",
   "description": "",
   "main": "index.js",
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/yoonzm/react-native-ali-onepass.git"
+    "url": "git+https://github.com/EatherToo/react-native-onepass-alibaba.git"
   },
   "keywords": [
     "react-native",
@@ -27,7 +27,7 @@
     "package.json",
     "README.md"
   ],
-  "author": "yoonzm",
+  "author": "Eather",
   "license": "MIT",
   "peerDependencies": {
     "react-native": "*"
