@@ -1,6 +1,6 @@
 
 ### react-native-onepass-alibaba
-  此项目由[react-native-ali-onepass](https://github.com/yoonzm/react-native-ali-onepass)for而来
+  此项目由[react-native-ali-onepass](https://github.com/yoonzm/react-native-ali-onepass) fork 而来
 
 #### 安装
 
