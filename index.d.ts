@@ -65,6 +65,7 @@ export const RESULT_CODES: {
   TOKENSUCCESS: '600000', // 获取 token 成功
   AUTHPAGESUCCESS: '600001', // 唤起授权⻚成功
   SWITCHAUTHWAY: '700001', // 用户点击切换按钮
+  PTAVICY_CLICK: '700004', // 点击协议富文本文字事件
   600000: '600000', // 获取 token 成功
   600001: '600001', // 唤起授权⻚成功
   600002: '600002', // 唤起授权⻚失败
