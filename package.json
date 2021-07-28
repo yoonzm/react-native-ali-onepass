@@ -1,6 +1,6 @@
 {
   "name": "react-native-onepass-alibaba",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -23,6 +23,7 @@
     "android/",
     "ios/",
     "index.js",
+    "index.d.ts",
     "RNAliOnepass.podspec",
     "package.json",
     "README.md"

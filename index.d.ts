@@ -4,77 +4,77 @@ import { EmitterSubscription } from 'react-native';
 
 export type UIConfig = {
   /** --start 仅限安卓 --- */
-  lightColor: boolean, // 状态栏亮色或暗色
-  statusBarHidden: true, // 状态栏显示与隐藏
-  pageBackgroundPath: string, // 背景图片地址
+  lightColor?: boolean, // 状态栏亮色或暗色
+  statusBarHidden?: true, // 状态栏显示与隐藏
+  pageBackgroundPath?: string, // 背景图片地址
   /** --end 仅限安卓 --- */
 
   // nav相关
-  navColor: string, // nav颜色
-  navTextColor: string, // nav文字颜色
-  navText: string, // nav文字内容
-  navTextSize: number, // nav文字大小
-  navHidden: true, // nav显示与隐藏
+  navColor?: string, // nav颜色
+  navTextColor?: string, // nav文字颜色
+  navText?: string, // nav文字内容
+  navTextSize?: number, // nav文字大小
+  navHidden?: true, // nav显示与隐藏
  
   // 协议webview配置
-  webNavColor: string, // nav颜色
-  webNavTextColor: string, // nav文字颜色
-  webNavTextSize: number, // nav文字内容
-  navReturnImgPath: string, // 返回按钮图片地址
+  webNavColor?: string, // nav颜色
+  webNavTextColor?: string, // nav文字颜色
+  webNavTextSize?: number, // nav文字内容
+  navReturnImgPath?: string, // 返回按钮图片地址
 
   // logo相关
-  logoImgPath: string,
-  logoHidden: boolean,
-  logoWidth: number,
-  logoHeight: number,
-  logoOffsetY: number, // logo 竖直方向位置
+  logoImgPath?: string,
+  logoHidden?: boolean,
+  logoWidth?: number,
+  logoHeight?: number,
+  logoOffsetY?: number, // logo 竖直方向位置
 
 
   // 手机号掩码
-  numberColor: string,
-  numberSize: number,
+  numberColor?: string,
+  numberSize?: number,
 
   // slogan相关
-  sloganText: string,
-  sloganTextColor: string,
-  sloganTextSize: number,
-  sloganOffsetY: number,
+  sloganText?: string,
+  sloganTextColor?: string,
+  sloganTextSize?: number,
+  sloganOffsetY?: number,
 
   // 登录按钮相关 
-  logBtnText: string,
-  logBtnTextColor: string,
-  logBtnTextSize: number,
-  logBtnMarginLeftAndRight: number, // 登录按钮左右margin
+  logBtnText?: string,
+  logBtnTextColor?: string,
+  logBtnTextSize?: number,
+  logBtnMarginLeftAndRight?: number, // 登录按钮左右margin
 
   // 登录按钮背景 ios
-  logBtnBackgroundPaths: string[],
+  logBtnBackgroundPaths?: string[],
   // 登录按钮背景 android
-  logBtnBackgroundPath: string,
+  logBtnBackgroundPath?: string,
   
   // 其他登录方式
-  switchAccText: string,
-  switchAccTextSize: number,
-  switchAccTextColor: string,
+  switchAccText?: string,
+  switchAccTextSize?: number,
+  switchAccTextColor?: string,
 
   // 协议栏
-  privacyBefore: string, // 协议前面的文字
-  privacyEnd: string, // 协议后面的文字
-  vendorPrivacyPrefix: string, // 运营商协议前面的文字
-  vendorPrivacySuffix: string, // 运营商协议后面的文字
-  checkboxHidden: boolean, // checkBox框的显示和隐藏
-  privacyState: boolean, // checkBox选中情况
-  appPrivacyOneName: string, // 自定义协议的名称
-  appPrivacyOneUrl: string, // 自定义协议的地址
-  privacyTextSize: number,
-  appPrivacyBaseColor: string,
-  appPrivacyColor: string,
+  privacyBefore?: string, // 协议前面的文字
+  privacyEnd?: string, // 协议后面的文字
+  vendorPrivacyPrefix?: string, // 运营商协议前面的文字
+  vendorPrivacySuffix?: string, // 运营商协议后面的文字
+  checkboxHidden?: boolean, // checkBox框的显示和隐藏
+  privacyState?: boolean, // checkBox选中情况
+  appPrivacyOneName?: string, // 自定义协议的名称
+  appPrivacyOneUrl?: string, // 自定义协议的地址
+  privacyTextSize?: number,
+  appPrivacyBaseColor?: string,
+  appPrivacyColor?: string,
 
     // 弹窗使用
-  dialogHeightDelta: number,
-  alertBarHidden: boolean,
-  alertBarCloseImgPath: string,
-  alertBarCloseImgWidth: number,
-  alertBarCloseImgHeight: number,
+  dialogHeightDelta?: number,
+  alertBarHidden?: boolean,
+  alertBarCloseImgPath?: string,
+  alertBarCloseImgWidth?: number,
+  alertBarCloseImgHeight?: number,
 }; // 提示：安卓端图片需要放在 drawable 下，ios端图片需要放在 Images.xcassets 下
 
 

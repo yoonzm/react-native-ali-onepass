@@ -8,6 +8,15 @@
 
 `$ yarn add react-native-onepass-alibaba`
 
+对于android端需在在  `android/app/build.gradle`中添加下面的代码
+```
+  repositories {
+      flatDir {
+          dirs 'libs', '../../node_modules/react-native-onepass-alibaba/android/libs'
+      }
+  }
+```
+
 对于ios还需要运行以下命令
 `$ cd ios && pod install`
 
