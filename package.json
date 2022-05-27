@@ -1,10 +1,11 @@
 {
   "name": "react-native-ali-onepass",
-  "version": "2.1.0",
+  "version": "3.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"no test specified \""
+    "release": "standard-version && npm run push",
+    "push": "git push --follow-tags origin master"
   },
   "repository": {
     "type": "git",
@@ -31,5 +32,8 @@
   "license": "MIT",
   "peerDependencies": {
     "react-native": "*"
+  },
+  "devDependencies": {
+    "standard-version": "^9.5.0"
   }
 }
