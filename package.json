@@ -20,13 +20,15 @@
     "onekey",
     "login"
   ],
+  "typings": "./index.d.ts",
   "files": [
     "android/",
     "ios/",
     "index.js",
     "RNAliOnepass.podspec",
     "package.json",
-    "README.md"
+    "README.md",
+    "index.d.ts"
   ],
   "author": "yoonzm",
   "license": "MIT",
