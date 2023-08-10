@@ -85,15 +85,14 @@ RCT_EXPORT_METHOD(onePass:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseReje
         return;
     }
     [tXCommonHandler getLoginTokenWithTimeout:0.0 controller:[UIApplication sharedApplication].keyWindow.rootViewController model:tXCustomModel complete:^(NSDictionary * _Nonnull resultDic) {
-        NSLog(@"resultDic = %@", resultDic);
         NSString *resultCode = [resultDic objectForKey:@"resultCode"];
         NSString *msg = [resultDic objectForKey:@"msg"];
         NSString *token = [resultDic objectForKey:@"token"];
-        if(resultCode==PNSCodeSuccess
-           || resultCode==PNSCodeLoginControllerPresentSuccess
-           || resultCode==PNSCodeLoginControllerClickLoginBtn
-           || resultCode==PNSCodeLoginControllerClickCheckBoxBtn
-              || resultCode==PNSCodeLoginControllerClickProtocol
+        if([resultCode isEqualToString:PNSCodeSuccess]
+        ||[resultCode isEqualToString:PNSCodeLoginControllerPresentSuccess]
+           || [resultCode isEqualToString:PNSCodeLoginControllerClickLoginBtn]
+           || [resultCode isEqualToString:PNSCodeLoginControllerClickCheckBoxBtn]
+           || [resultCode isEqualToString:PNSCodeLoginControllerClickProtocol]
            ) {
             [self sendEventWithName:@"onTokenSuccess" body:@{
                                                              @"msg": msg!=nil ? msg: @"",
@@ -195,7 +194,7 @@ RCT_EXPORT_METHOD(setUIConfig:(NSDictionary *)config resolve:(RCTPromiseResolveB
 
     NSString *alertlogoWidth = [config objectForKey:[self methodName2KeyName:@"setLogoWidth"]];
     NSString *alertlogoHeight = [config objectForKey:[self methodName2KeyName:@"setLogoHeight"]];
-    
+
     CGFloat logoWidth = 30;
     CGFloat logoHeight = 30;
     if (alertlogoWidth != nil) {
@@ -220,7 +219,7 @@ RCT_EXPORT_METHOD(setUIConfig:(NSDictionary *)config resolve:(RCTPromiseResolveB
             x = [logoOffsetX floatValue];
         }
         return CGRectMake(x, y, logoWidth, logoHeight);
-    }; 
+    };
     // number
     NSString *numberColor = [config objectForKey:[self methodName2KeyName:@"setNumberColor"]];
     if (numberColor != nil) {

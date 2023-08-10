@@ -38,6 +38,8 @@ static NSString * const PNSCodeInterfaceLimited = @"600014";
 static NSString * const PNSCodeInterfaceTimeout = @"600015";
 /// AppID、Appkey解析失败
 static NSString * const PNSCodeDecodeAppInfoFailed = @"600017";
+/// 该号码已被运营商管控,目前只有联通号码有该功能
+static NSString * const PNSCodePhoneBlack = @"600018";
 /// 运营商已切换
 static NSString * const PNSCodeCarrierChanged = @"600021";
 /// 终端环境检测失败（终端不支持认证 / 终端检测参数错误）
@@ -61,8 +63,24 @@ static NSString * const PNSCodeLoginControllerClickLoginBtn = @"700002";
 static NSString * const PNSCodeLoginControllerClickCheckBoxBtn = @"700003";
 /// 点击协议富文本文字
 static NSString * const PNSCodeLoginControllerClickProtocol = @"700004";
+/// 中断页面消失的时候，也就是suspendDisMissVC设置为YES的时候，点击左上角返回按钮时透出的状态码
+static NSString * const PNSCodeLoginControllerSuspendDisMissVC = @"700010";
 
 /*************** 号码认证授权页相关返回码 FINISH ***************/
+
+
+/*************** 二次授权页返回code码 START ***************/
+
+/// 点击一键登录拉起授权页二次弹窗
+static NSString * const PNSCodeLoginClickPrivacyAlertView = @"700006";
+/// 隐私协议二次弹窗关闭
+static NSString * const PNSCodeLoginPrivacyAlertViewClose = @"700007";
+/// 隐私协议二次弹窗点击确认并继续
+static NSString * const PNSCodeLoginPrivacyAlertViewClickContinue = @"700008";
+/// 点击隐私协议二次弹窗上的协议富文本文字
+static NSString * const PNSCodeLoginPrivacyAlertViewPrivacyContentClick = @"700009";
+
+/*************** 二次授权页返回code码 FINISH ***************/
 
 
 #endif /* PNSReturnCode_h */
