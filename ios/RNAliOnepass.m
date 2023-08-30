@@ -32,7 +32,7 @@ RCT_EXPORT_METHOD(init:(NSString *)secretInfo resolve:(RCTPromiseResolveBlock)re
     tXCommonHandler = [TXCommonHandler sharedInstance];
     [tXCommonHandler setAuthSDKInfo:secretInfo complete:^(NSDictionary * _Nonnull resultDic) {
         NSString *resultCode = [resultDic objectForKey:@"resultCode"];
-        if(resultCode==PNSCodeSuccess) {
+        if([resultCode isEqualToString:PNSCodeSuccess]) {
             resolve(@"");
         } else {
             reject(resultCode, [resultDic objectForKey:@"msg"], nil);
@@ -54,9 +54,9 @@ RCT_EXPORT_METHOD(checkEnvAvailable:(RCTPromiseResolveBlock)resolve reject:(RCTP
     if(![self checkInit:reject]){
         return;
     }
-    [tXCommonHandler checkEnvAvailableWithComplete:^(NSDictionary * _Nullable resultDic) {
+    [tXCommonHandler checkEnvAvailableWithAuthType:PNSAuthTypeLoginToken complete:^(NSDictionary * _Nullable resultDic) {
         NSString *resultCode = [resultDic objectForKey:@"resultCode"];
-        if(resultCode==PNSCodeSuccess) {
+        if([resultCode isEqualToString:PNSCodeSuccess]) {
             resolve(@"");
         } else {
             reject(resultCode, [resultDic objectForKey:@"msg"], nil);
@@ -71,7 +71,7 @@ RCT_EXPORT_METHOD(prefetch:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRej
     }
     [tXCommonHandler accelerateLoginPageWithTimeout:0.0 complete:^(NSDictionary * _Nonnull resultDic) {
         NSString *resultCode = [resultDic objectForKey:@"resultCode"];
-        if(resultCode==PNSCodeSuccess) {
+        if([resultCode isEqualToString:PNSCodeSuccess]) {
             resolve(@"");
         } else {
             reject(resultCode, [resultDic objectForKey:@"msg"], nil);
