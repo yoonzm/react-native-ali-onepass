@@ -684,4 +684,3 @@ RCT_EXPORT_METHOD(setDialogUIConfig:(NSDictionary *)config resolve:(RCTPromiseRe
 }
 
 @end
-
