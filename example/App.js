@@ -1,6 +1,3 @@
-/**
- * Created by lvshaoli on 2020/1/9.
- */
 import React, {Component} from 'react';
 import {
   Text,
@@ -160,7 +157,7 @@ export default class App extends Component {
       privacyEnd: '并授权获取本机号码',
       checkboxHidden: true,
       privacyState: true,
-      appPrivacyOneName: '《智慧好医生APP协议》',
+      appPrivacyOneName: '《xxx APP协议》',
       appPrivacyOneUrl: 'https://www.baidu.com',
       vendorPrivacyPrefix: '《',
       vendorPrivacySuffix: '》',
