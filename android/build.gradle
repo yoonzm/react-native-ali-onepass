@@ -57,9 +57,9 @@ repositories {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.facebook.react:react-native:+'
-    implementation(name:'auth_number_product-2.12.4-SNAPSHOT-log-online-standard-release', ext:'aar')
+    implementation(name:'auth_number_product-2.13.3-log-online-standard-cuum-release', ext:'aar')
     implementation(name:'crashshield-2.1.4-release', ext:'aar')
-    implementation(name:'main-2.1.4-release', ext:'aar')
-    implementation(name:'logger-2.1.4-release', ext:'aar')
+    implementation(name:'main-2.2.2-release', ext:'aar')
+    implementation(name:'logger-2.2.2-release', ext:'aar')
     implementation 'com.alibaba:fastjson:1.2.60' // 配置对gson的依赖
 }
